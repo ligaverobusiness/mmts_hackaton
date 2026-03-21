@@ -1,0 +1,142 @@
+.wrap {
+  position: relative;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.btnConnect {
+  font-family: "Cinzel", serif;
+  font-size: 9px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  padding: 9px 20px;
+  background: var(--ink);
+  color: var(--gold-l);
+  border: none;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 160px;
+  justify-content: center;
+}
+.btnConnect:hover:not(:disabled) {
+  background: #2e2010;
+}
+.btnConnect:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.spinner {
+  width: 12px;
+  height: 12px;
+  border: 2px solid var(--gold-l);
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  display: inline-block;
+}
+
+.btnAddress {
+  font-family: "Courier Prime", monospace;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 8px 14px;
+  background: var(--paper3);
+  color: var(--ink);
+  border: 1px solid var(--bd-hi);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s;
+}
+.btnAddress:hover {
+  background: var(--gold-bg);
+  border-color: var(--gold-b);
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  background: var(--green);
+  border-radius: 50%;
+  flex-shrink: 0;
+  box-shadow: 0 0 6px var(--green);
+}
+
+.caret {
+  font-size: 8px;
+  color: var(--ink3);
+}
+
+.dropdown {
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  background: var(--paper3);
+  border: 1px solid var(--bd-hi);
+  min-width: 200px;
+  box-shadow: var(--shadow-md);
+  z-index: 100;
+  animation: fadeUp 0.15s ease;
+}
+
+.dropHeader {
+  padding: 12px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.dropAddr {
+  font-family: "Courier Prime", monospace;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--ink);
+}
+.dropBal {
+  font-family: "Courier Prime", monospace;
+  font-size: 10px;
+  color: var(--ink3);
+}
+
+.dropDivider {
+  height: 1px;
+  background: var(--bd);
+}
+
+.dropItem {
+  width: 100%;
+  text-align: left;
+  font-family: "Cinzel", serif;
+  font-size: 8px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  padding: 11px 16px;
+  background: transparent;
+  color: var(--ink2);
+  border: none;
+  transition: background 0.15s;
+  display: block;
+}
+.dropItem:hover {
+  background: var(--gold-bg);
+  color: var(--ink);
+}
+
+.dropItemDanger {
+  color: var(--red);
+}
+.dropItemDanger:hover {
+  background: var(--red-l);
+}
+
+.error {
+  font-family: "Courier Prime", monospace;
+  font-size: 9px;
+  color: var(--red);
+  margin-top: 4px;
+  max-width: 220px;
+  text-align: right;
+}
