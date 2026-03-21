@@ -11,6 +11,7 @@
   padding: 14px 32px;
   position: relative;
   overflow: visible;
+  z-index: 60;
 }
 .header::before {
   content: "";
@@ -49,7 +50,7 @@
   position: absolute;
   right: 0;
   top: 14px;
-  z-index: 10;
+  z-index: 100;
 }
 
 .hCorner {
