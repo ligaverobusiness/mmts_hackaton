@@ -16,7 +16,6 @@ import ValidadoresPanel from "../components/validadores/ValidadoresPanel";
 import Badge from "../components/ui/Badge";
 import Countdown from "../components/ui/Countdown";
 import styles from "./DetalleContrato.module.css";
-import FileUploader from "../components/ui/FileUploader";
 
 function fmt(n) {
   if (n >= 1e6) return `$${(n / 1e6).toFixed(1)}M`;
@@ -35,7 +34,6 @@ export default function DetalleContrato() {
   const [condIa, setCondIa] = useState(null);
   const [loading, setLoading] = useState(true);
   const [txLoading, setTxLoading] = useState(false);
-  const [archivosSubidos, setArchivosSubidos] = useState([]);
 
   // Entrega
   const [deliveryUrl, setDeliveryUrl] = useState("");
@@ -313,120 +311,20 @@ export default function DetalleContrato() {
                   <p className={styles.deliveryCriteria}>
                     {contrato.description || contrato.descripcion_publica}
                   </p>
-
-                  {/* Aviso GenLayer */}
-                  <div className={styles.genlayerNotice}>
-                    <div className={styles.genlayerNoticeTitle}>
-                      ⬡ Cómo evalúa GenLayer tu entrega
-                    </div>
-
-                    <div className={styles.genlayerNoticeGrid}>
-                      <div className={styles.genlayerNoticeCol}>
-                        <div
-                          className={styles.genlayerNoticeLabel}
-                          style={{ color: "var(--green)" }}
-                        >
-                          ✓ Lee bien
-                        </div>
-                        <ul className={styles.genlayerNoticeList}>
-                          <li>PDFs con texto seleccionable</li>
-                          <li>Páginas web y HTML públicos</li>
-                          <li>Código en GitHub (raw)</li>
-                          <li>Archivos de texto (TXT, MD)</li>
-                          <li>Imágenes con contenido visible claro</li>
-                        </ul>
-                      </div>
-
-                      <div className={styles.genlayerNoticeCol}>
-                        <div
-                          className={styles.genlayerNoticeLabel}
-                          style={{ color: "var(--amber)" }}
-                        >
-                          ⚠ Limitaciones
-                        </div>
-                        <ul className={styles.genlayerNoticeList}>
-                          <li>PDFs escaneados (imágenes de texto)</li>
-                          <li>Links de Drive sin permiso público</li>
-                          <li>Archivos ZIP (no puede leer el interior)</li>
-                          <li>Imágenes de baja resolución</li>
-                          <li>Links que requieren inicio de sesión</li>
-                        </ul>
-                      </div>
-                    </div>
-
-                    <div className={styles.genlayerNoticeTip}>
-                      💡 Para máxima compatibilidad: sube archivos directamente
-                      a IPFS con el botón de abajo, o usa links públicos de
-                      GitHub, Figma o URLs directas.
-                    </div>
-                  </div>
-
-                  {/* Bloque 1: Upload IPFS */}
-                  <div className={styles.uploadBlock}>
-                    <div className={styles.uploadBlockHeader}>
-                      <div className={styles.uploadBlockTitle}>
-                        Subir archivos a IPFS
-                      </div>
-
-                      <a
-                        href="https://pinata.cloud"
-                        target="_blank"
-                        rel="noreferrer"
-                        className={styles.pinataTag}
-                      >
-                        Powered by{" "}
-                        <span className={styles.pinataLogo}>Pinata</span>
-                      </a>
-                    </div>
-
-                    <div className={styles.uploadBlockDesc}>
-                      PDF · PNG · JPG · SVG · TXT · HTML — genera una URL
-                      permanente y pública que GenLayer puede leer directamente.
-                    </div>
-
-                    <FileUploader
-                      disabled={txLoading}
-                      onUpload={(archivo) => {
-                        setArchivosSubidos((prev) => [...prev, archivo]);
-
-                        if (!deliveryUrl.trim()) {
-                          setDeliveryUrl(archivo.url);
-                        } else {
-                          setDeliveryUrl((prev) => prev + "\n" + archivo.url);
-                        }
-                      }}
-                    />
-                  </div>
-
-                  {/* Bloque 2: Links manuales */}
-                  <div className={styles.uploadBlock}>
-                    <div className={styles.uploadBlockTitle}>
-                      Links externos
-                    </div>
-
-                    <div className={styles.uploadBlockDesc}>
-                      GitHub, Figma (link público), sitio web desplegado, raw
-                      URL de cualquier archivo accesible. Un link por línea.
-                    </div>
-
-                    <textarea
-                      className={styles.textarea}
-                      rows={3}
-                      value={deliveryUrl}
-                      onChange={(e) => setDeliveryUrl(e.target.value)}
-                      placeholder={
-                        "https://raw.githubusercontent.com/usuario/repo/main/archivo.pdf\n" +
-                        "https://gateway.pinata.cloud/ipfs/Qm...\n" +
-                        "https://www.figma.com/file/..."
-                      }
-                    />
-                  </div>
-
+                  <label className={styles.label}>
+                    Enlace de entrega / Hash / IPFS
+                  </label>
+                  <textarea
+                    className={styles.textarea}
+                    rows={3}
+                    value={deliveryUrl}
+                    onChange={(e) => setDeliveryUrl(e.target.value)}
+                    placeholder="Pega el link de Drive, GitHub, Figma, IPFS o describe tu entrega…"
+                  />
                   <button
-                    type="button"
                     className={styles.btnEntregar}
                     onClick={handleEntregar}
-                    disabled={txLoading || !deliveryUrl.trim()}
+                    disabled={txLoading}
                   >
                     {txLoading ? (
                       <>
