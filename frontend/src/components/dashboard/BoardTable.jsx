@@ -4,13 +4,12 @@ import styles from "./BoardTable.module.css";
 
 export default function BoardTable({ onPublicar }) {
   const { entries, isLoading, error } = useApp();
-  console.log("entries en tabla:", entries.length, entries);
 
   if (isLoading) {
     return (
       <div className={styles.state}>
         <div className={styles.spinner} />
-        <p className={styles.stateText}>Cargando el tablero…</p>
+        <p className={styles.stateText}>Cargando el tablero...</p>
       </div>
     );
   }
@@ -28,38 +27,21 @@ export default function BoardTable({ onPublicar }) {
   if (entries.length === 0) {
     return (
       <div className={styles.empty}>
+        <div className={styles.emptyIcon}>+</div>
         <p className={styles.emptyTitle}>Sin registros</p>
-        <p className={styles.emptySub}>El tablero está vacío.</p>
+        <p className={styles.emptySub}>El tablero est\u00e1 vac\u00edo.</p>
         <button className={styles.emptyBtn} onClick={onPublicar}>
-          ＋ Publicar la primera orden
+          + Publicar la primera orden
         </button>
       </div>
     );
   }
 
   return (
-    <div className={styles.tableWrap}>
-      <table className={styles.table}>
-        <thead className={styles.thead}>
-          <tr>
-            <th>Nº</th>
-            <th>Título / Evento</th>
-            <th>Tipo</th>
-            <th>Monto / Pozo</th>
-            <th>Estado</th>
-            <th>Categoría</th>
-            <th>Vence en</th>
-            <th>Part.</th>
-            <th>Vis.</th>
-            <th>Acciones</th>
-          </tr>
-        </thead>
-        <tbody>
-          {entries.map((e, i) => (
-            <BoardRow key={e.address || i} entry={e} index={i} />
-          ))}
-        </tbody>
-      </table>
+    <div className={styles.grid}>
+      {entries.map((e, i) => (
+        <BoardRow key={e.address || i} entry={e} index={i} />
+      ))}
     </div>
   );
 }

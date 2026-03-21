@@ -6,15 +6,17 @@
 }
 
 .btnConnect {
-  font-family: "Cinzel", serif;
-  font-size: 9px;
-  letter-spacing: 3px;
+  font-family: "Montserrat", sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
   text-transform: uppercase;
   padding: 9px 20px;
-  background: var(--ink);
-  color: var(--gold-l);
+  background: linear-gradient(135deg, var(--accent), #9333ea);
+  color: #fff;
   border: none;
-  transition: all 0.2s;
+  border-radius: var(--radius-sm);
+  transition: all 0.3s;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -22,7 +24,8 @@
   justify-content: center;
 }
 .btnConnect:hover:not(:disabled) {
-  background: #2e2010;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px var(--accent-glow);
 }
 .btnConnect:disabled {
   opacity: 0.6;
@@ -32,29 +35,30 @@
 .spinner {
   width: 12px;
   height: 12px;
-  border: 2px solid var(--gold-l);
-  border-top-color: transparent;
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  border-top-color: #fff;
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
   display: inline-block;
 }
 
 .btnAddress {
-  font-family: "Courier Prime", monospace;
+  font-family: "Montserrat", sans-serif;
   font-size: 11px;
-  font-weight: 700;
+  font-weight: 600;
   padding: 8px 14px;
-  background: var(--paper3);
-  color: var(--ink);
+  background: var(--bg3);
+  color: var(--text);
   border: 1px solid var(--bd-hi);
+  border-radius: var(--radius-sm);
   display: flex;
   align-items: center;
   gap: 8px;
   transition: all 0.2s;
 }
 .btnAddress:hover {
-  background: var(--gold-bg);
-  border-color: var(--gold-b);
+  background: var(--card-hover);
+  border-color: var(--accent);
 }
 
 .dot {
@@ -68,19 +72,21 @@
 
 .caret {
   font-size: 8px;
-  color: var(--ink3);
+  color: var(--text3);
 }
 
 .dropdown {
   position: absolute;
   top: calc(100% + 6px);
   right: 0;
-  background: var(--paper3);
+  background: var(--bg3);
   border: 1px solid var(--bd-hi);
+  border-radius: var(--radius-sm);
   min-width: 200px;
   box-shadow: var(--shadow-md);
   z-index: 100;
   animation: fadeUp 0.15s ease;
+  overflow: hidden;
 }
 
 .dropHeader {
@@ -90,15 +96,15 @@
   gap: 3px;
 }
 .dropAddr {
-  font-family: "Courier Prime", monospace;
+  font-family: "Montserrat", sans-serif;
   font-size: 12px;
   font-weight: 700;
-  color: var(--ink);
+  color: var(--text);
 }
 .dropBal {
-  font-family: "Courier Prime", monospace;
+  font-family: "Montserrat", sans-serif;
   font-size: 10px;
-  color: var(--ink3);
+  color: var(--text3);
 }
 
 .dropDivider {
@@ -109,31 +115,31 @@
 .dropItem {
   width: 100%;
   text-align: left;
-  font-family: "Cinzel", serif;
-  font-size: 8px;
-  letter-spacing: 3px;
-  text-transform: uppercase;
+  font-family: "Montserrat", sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 1px;
   padding: 11px 16px;
   background: transparent;
-  color: var(--ink2);
+  color: var(--text2);
   border: none;
   transition: background 0.15s;
   display: block;
 }
 .dropItem:hover {
-  background: var(--gold-bg);
-  color: var(--ink);
+  background: rgba(124, 92, 252, 0.1);
+  color: var(--text);
 }
 
 .dropItemDanger {
   color: var(--red);
 }
 .dropItemDanger:hover {
-  background: var(--red-l);
+  background: var(--red-bg);
 }
 
 .error {
-  font-family: "Courier Prime", monospace;
+  font-family: "Montserrat", sans-serif;
   font-size: 9px;
   color: var(--red);
   margin-top: 4px;

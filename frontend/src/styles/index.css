@@ -1,32 +1,55 @@
-@import url("https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Courier+Prime:wght@400;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400&display=swap");
 
 :root {
-  --paper: #f3ebe0;
-  --paper2: #faf6ef;
-  --paper3: #fff9f2;
-  --ink: #1c1209;
-  --ink2: #4a3c2e;
-  --ink3: #8a7a68;
-  --ink4: #b8a898;
-  --gold: #8a6c1a;
-  --gold-b: #b08c28;
-  --gold-l: #e8d49a;
-  --gold-bg: #fdf4db;
-  --navy: #1a3254;
-  --navy-l: #dce8f7;
-  --plum: #5c1e7a;
-  --plum-l: #eeddf8;
-  --green: #1a5c34;
-  --green-l: #d4f0e2;
-  --amber: #92520a;
-  --amber-l: #fdefd8;
-  --red: #8b1a2a;
-  --red-l: #fce4e8;
-  --bd: rgba(140, 110, 60, 0.18);
-  --bd-hi: rgba(140, 110, 60, 0.38);
-  --shadow: 0 1px 3px rgba(28, 18, 9, 0.07), 0 4px 16px rgba(28, 18, 9, 0.05);
-  --shadow-md:
-    0 2px 8px rgba(28, 18, 9, 0.09), 0 8px 32px rgba(28, 18, 9, 0.06);
+  --bg: #363232;
+  --bg2: #2e2a2a;
+  --bg3: #4a4545;
+  --card: #4a4545;
+  --card-hover: #555050;
+  --text: #ffffff;
+  --text2: rgba(255, 255, 255, 0.75);
+  --text3: rgba(255, 255, 255, 0.5);
+  --text4: rgba(255, 255, 255, 0.3);
+  --nav-bg: #111111;
+  --header-bg: #c8c8c8;
+  --header-text: #1a1a1a;
+  --accent: #7c5cfc;
+  --accent-light: #a78bfa;
+  --accent-glow: rgba(124, 92, 252, 0.35);
+  --navy: #4a8fe7;
+  --navy-bg: rgba(74, 143, 231, 0.15);
+  --plum: #c77dff;
+  --plum-bg: rgba(199, 125, 255, 0.15);
+  --green: #4ade80;
+  --green-bg: rgba(74, 222, 128, 0.15);
+  --amber: #fbbf24;
+  --amber-bg: rgba(251, 191, 36, 0.15);
+  --red: #f87171;
+  --red-bg: rgba(248, 113, 113, 0.15);
+  --bd: rgba(255, 255, 255, 0.08);
+  --bd-hi: rgba(255, 255, 255, 0.15);
+  --shadow: 0 2px 8px rgba(0, 0, 0, 0.2), 0 8px 24px rgba(0, 0, 0, 0.15);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.3), 0 12px 40px rgba(0, 0, 0, 0.2);
+  --radius: 14px;
+  --radius-sm: 8px;
+
+  /* Backward-compatible aliases for other pages */
+  --paper: var(--bg);
+  --paper2: var(--bg2);
+  --paper3: var(--bg3);
+  --ink: var(--text);
+  --ink2: var(--text2);
+  --ink3: var(--text3);
+  --ink4: var(--text4);
+  --gold: var(--accent);
+  --gold-b: var(--accent-light);
+  --gold-l: var(--accent-light);
+  --gold-bg: var(--accent-glow);
+  --navy-l: var(--navy-bg);
+  --plum-l: var(--plum-bg);
+  --green-l: var(--green-bg);
+  --amber-l: var(--amber-bg);
+  --red-l: var(--red-bg);
 }
 
 *,
@@ -38,21 +61,11 @@
 }
 
 body {
-  background: var(--paper);
-  color: var(--ink);
-  font-family: "Playfair Display", Georgia, serif;
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Montserrat", sans-serif;
   min-height: 100vh;
   overflow-x: hidden;
-}
-
-body::after {
-  content: "";
-  position: fixed;
-  inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
-  pointer-events: none;
-  z-index: 9998;
-  opacity: 0.6;
 }
 
 a {
@@ -65,41 +78,75 @@ button {
 }
 
 ::-webkit-scrollbar {
-  width: 3px;
+  width: 4px;
 }
 ::-webkit-scrollbar-track {
-  background: var(--paper);
+  background: var(--bg2);
 }
 ::-webkit-scrollbar-thumb {
   background: var(--bd-hi);
-  border-radius: 2px;
+  border-radius: 4px;
 }
 
+/* ── Animations ── */
 @keyframes fadeUp {
   from {
     opacity: 0;
-    transform: translateY(6px);
+    transform: translateY(20px);
   }
   to {
     opacity: 1;
     transform: translateY(0);
   }
 }
-@keyframes blink {
-  0%,
-  100% {
-    opacity: 1;
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
   }
-  50% {
-    opacity: 0.35;
+  to {
+    opacity: 1;
+    transform: translateX(0);
   }
 }
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+@keyframes glowPulse {
+  0%, 100% { box-shadow: 0 0 5px var(--accent-glow); }
+  50% { box-shadow: 0 0 20px var(--accent-glow), 0 0 40px rgba(124, 92, 252, 0.15); }
+}
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.35; }
+}
 @keyframes spin {
+  to { transform: rotate(360deg); }
+}
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
   to {
-    transform: rotate(360deg);
+    opacity: 1;
+    transform: scale(1);
   }
 }
 
 .fade-up {
-  animation: fadeUp 0.35s ease forwards;
+  animation: fadeUp 0.4s ease forwards;
 }
