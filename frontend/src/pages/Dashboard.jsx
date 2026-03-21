@@ -35,11 +35,6 @@ export default function Dashboard() {
           <Link to="/dashboard" className={styles.headerLogo}>
             <img src="/minka_logo.png" alt="Minka" className={styles.headerLogoImg} />
           </Link>
-          <div className={styles.ornament}>
-            <div className={styles.line} />
-            <div className={styles.diamond} />
-            <div className={`${styles.line} ${styles.lineR}`} />
-          </div>
           <p className={styles.sub}>Contratos · Apuestas · Gobernanza</p>
           <div className={styles.headerRight}>
             <WalletButton />
