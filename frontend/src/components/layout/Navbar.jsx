@@ -1,5 +1,4 @@
 import { Link, useLocation } from "react-router-dom";
-import WalletButton from "../wallet/WalletButton";
 import styles from "./Navbar.module.css";
 
 export default function Navbar() {
@@ -7,10 +6,6 @@ export default function Navbar() {
 
   return (
     <nav className={styles.nav}>
-      <Link to="/dashboard" className={styles.logo}>
-        <img src="/minka_logo.png" alt="Minka" className={styles.logoImg} />
-      </Link>
-
       <div className={styles.links}>
         <Link
           to="/dashboard"
@@ -25,8 +20,6 @@ export default function Navbar() {
           Mi Expediente
         </Link>
       </div>
-
-      <WalletButton />
     </nav>
   );
 }
