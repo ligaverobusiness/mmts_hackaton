@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useWallet } from "../context/WalletContext";
 import { useToast } from "../context/ToastContext";
 import { useApp } from "../context/AppContext";
+import Navbar from "../components/layout/Navbar";
 import {
   getApuestaById,
   apostar,
@@ -184,13 +185,35 @@ export default function DetalleApuesta() {
   return (
     <div className={styles.page}>
       <div className={styles.content}>
-        <button className={styles.back} onClick={() => navigate("/dashboard")}>
-          ← Volver
-        </button>
+        <div className={styles.topHeader}>
+          <div className={`${styles.hCorner} ${styles.tl}`} />
+          <div className={`${styles.hCorner} ${styles.tr}`} />
+
+          <div className={styles.eyebrow}>DETALLE · APUESTA · ON-CHAIN</div>
+
+          <h1 className={styles.title}>
+            LA <span>APUESTA</span>
+          </h1>
+
+          <div className={styles.ornament}>
+            <div className={styles.line}></div>
+            <div className={styles.diamond}></div>
+            <div className={`${styles.line} ${styles.lineR}`}></div>
+          </div>
+
+          <div className={styles.sub}>VALIDACIÓN · ENTREGA · GENLAYER</div>
+        </div>
+        <Navbar />
 
         {/* Header */}
         <div className={styles.header}>
           <div className={styles.headerLeft}>
+            <button
+              className={styles.back}
+              onClick={() => navigate("/dashboard")}
+            >
+              ← Volver
+            </button>
             <div className={styles.mainTitle}>{apuesta.title}</div>
             <div className={styles.badges}>
               <span className={styles.ttag}>APUESTA</span>
@@ -305,31 +328,41 @@ export default function DetalleApuesta() {
             <section className={styles.section}>
               <div className={styles.sectionTitle}>Detalles del Mercado</div>
               <div className={styles.kvGrid}>
-                <span className={styles.k}>Categoría</span>
-                <span className={styles.v}>
-                  {apuesta.category || apuesta.categoria}
-                </span>
-                <span className={styles.k}>Participantes</span>
-                <span className={styles.v}>
-                  {apuesta.participants || apuesta.ops || 0}
-                </span>
-                <span className={styles.k}>Creador</span>
-                <span className={styles.v}>
-                  {apuesta.creator
-                    ? `${apuesta.creator.slice(0, 6)}…${apuesta.creator.slice(-4)}`
-                    : "—"}
-                </span>
-                <span className={styles.k}>Vencimiento</span>
-                <span className={styles.v}>
-                  <Countdown expiresAt={apuesta.expiresAt} />
-                </span>
-                <span className={styles.k}>Criterio de resolución</span>
-                <span
-                  className={styles.v}
-                  style={{ fontStyle: "italic", color: "var(--ink3)" }}
-                >
-                  {apuesta.resolutionCriteria || "—"}
-                </span>
+                <div className={styles.kvRow}>
+                  <span className={styles.k}>Categoría</span>
+                  <span className={styles.v}>
+                    {apuesta.category || apuesta.categoria}
+                  </span>
+                </div>
+                <div className={styles.kvRow}>
+                  <span className={styles.k}>Participantes</span>
+                  <span className={styles.v}>
+                    {apuesta.participants || apuesta.ops || 0}
+                  </span>
+                </div>
+                <div className={styles.kvRow}>
+                  <span className={styles.k}>Creador</span>
+                  <span className={styles.v}>
+                    {apuesta.creator
+                      ? `${apuesta.creator.slice(0, 6)}…${apuesta.creator.slice(-4)}`
+                      : "—"}
+                  </span>
+                </div>
+                <div className={styles.kvRow}>
+                  <span className={styles.k}>Vencimiento</span>
+                  <span className={styles.v}>
+                    <Countdown expiresAt={apuesta.expiresAt} />
+                  </span>
+                </div>
+                <div className={styles.kvRow}>
+                  <span className={styles.k}>Criterio de resolución</span>
+                  <span
+                    className={styles.v}
+                    style={{ fontStyle: "italic", color: "var(--ink3)" }}
+                  >
+                    {apuesta.resolutionCriteria || "—"}
+                  </span>
+                </div>
               </div>
             </section>
 

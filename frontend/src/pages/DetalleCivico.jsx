@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useWallet } from "../context/WalletContext";
 import { useToast } from "../context/ToastContext";
 import { useApp } from "../context/AppContext";
+import Navbar from "../components/layout/Navbar";
 import {
   getCivicoById,
   votarPropuesta,
@@ -141,13 +142,35 @@ export default function DetalleCivico() {
   return (
     <div className={styles.page}>
       <div className={styles.content}>
+        <div className={styles.topHeader}>
+          <div className={`${styles.hCorner} ${styles.tl}`} />
+          <div className={`${styles.hCorner} ${styles.tr}`} />
+
+          <div className={styles.eyebrow}>DETALLE · CÍVICO · ON-CHAIN</div>
+
+          <h1 className={styles.title}>
+            <span>CÍVICO</span>
+          </h1>
+
+          <div className={styles.ornament}>
+            <div className={styles.line}></div>
+            <div className={styles.diamond}></div>
+            <div className={`${styles.line} ${styles.lineR}`}></div>
+          </div>
+
+          <div className={styles.sub}>VALIDACIÓN · ENTREGA · GENLAYER</div>
+        </div>
+        <Navbar />
         {/* Header */}
-        <button className={styles.back} onClick={() => navigate("/dashboard")}>
-          ← Volver
-        </button>
 
         <div className={styles.header}>
           <div className={styles.headerLeft}>
+            <button
+              className={styles.back}
+              onClick={() => navigate("/dashboard")}
+            >
+              ← Volver
+            </button>
             <div className={styles.entidad}>
               {propuesta.entidad_nombre || "Propuesta Cívica"}
             </div>
@@ -193,32 +216,44 @@ export default function DetalleCivico() {
             <section className={styles.section}>
               <div className={styles.sectionTitle}>Detalles</div>
               <div className={styles.kvGrid}>
-                <span className={styles.k}>Entidad</span>
-                <span className={styles.v}>
-                  {propuesta.entidad_nombre || "—"}
-                </span>
-                <span className={styles.k}>Categoría</span>
-                <span className={styles.v}>
-                  {propuesta.categoria || propuesta.category}
-                </span>
-                <span className={styles.k}>Dirección destino</span>
-                <span className={styles.v}>
-                  {propuesta.destinationAddress
-                    ? `${propuesta.destinationAddress.slice(0, 8)}…${propuesta.destinationAddress.slice(-6)}`
-                    : "—"}
-                </span>
-                <span className={styles.k}>Creador</span>
-                <span className={styles.v}>
-                  {propuesta.creator
-                    ? `${propuesta.creator.slice(0, 6)}…${propuesta.creator.slice(-4)}`
-                    : "—"}
-                </span>
-                <span className={styles.k}>Cierre de votación</span>
-                <span className={styles.v}>
-                  <Countdown expiresAt={propuesta.expiresAt} />
-                </span>
-                <span className={styles.k}>Total votos</span>
-                <span className={styles.v}>{totalVotos}</span>
+                <div className={styles.kvRow}>
+                  <span className={styles.k}>Entidad</span>
+                  <span className={styles.v}>
+                    {propuesta.entidad_nombre || "—"}
+                  </span>
+                </div>
+                <div className={styles.kvRow}>
+                  <span className={styles.k}>Categoría</span>
+                  <span className={styles.v}>
+                    {propuesta.categoria || propuesta.category}
+                  </span>
+                </div>
+                <div className={styles.kvRow}>
+                  <span className={styles.k}>Dirección destino</span>
+                  <span className={styles.v}>
+                    {propuesta.destinationAddress
+                      ? `${propuesta.destinationAddress.slice(0, 8)}…${propuesta.destinationAddress.slice(-6)}`
+                      : "—"}
+                  </span>
+                </div>
+                <div className={styles.kvRow}>
+                  <span className={styles.k}>Creador</span>
+                  <span className={styles.v}>
+                    {propuesta.creator
+                      ? `${propuesta.creator.slice(0, 6)}…${propuesta.creator.slice(-4)}`
+                      : "—"}
+                  </span>
+                </div>
+                <div className={styles.kvRow}>
+                  <span className={styles.k}>Cierre de votación</span>
+                  <span className={styles.v}>
+                    <Countdown expiresAt={propuesta.expiresAt} />
+                  </span>
+                </div>
+                <div className={styles.kvRow}>
+                  <span className={styles.k}>Total votos</span>
+                  <span className={styles.v}>{totalVotos}</span>
+                </div>
               </div>
             </section>
 

@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useWallet } from "../context/WalletContext";
 import { useToast } from "../context/ToastContext";
 import { useApp } from "../context/AppContext";
 import { getUsuario } from "../services/usuarios";
+import Navbar from "../components/layout/Navbar";
+import WalletButton from "../components/wallet/WalletButton";
 import Badge from "../components/ui/Badge";
 import Countdown from "../components/ui/Countdown";
 import styles from "./MiExpediente.module.css";
@@ -70,39 +72,49 @@ export default function MiExpediente() {
 
   if (loading) {
     return (
-      <div className={styles.loading}>
-        <div className={styles.spinner} />
-        <p>Cargando expediente…</p>
+      <div className={styles.page}>
+        <div className={styles.loading}>
+          <div className={styles.spinner} />
+          <p>Cargando expediente…</p>
+        </div>
       </div>
     );
   }
 
   return (
     <div className={styles.page}>
-      <div className={styles.content}>
-        {/* Header */}
-        <div className={styles.header}>
-          <div className={styles.hCorner + " " + styles.tl} />
-          <div className={styles.hCorner + " " + styles.tr} />
-          <div className={styles.eyebrow}>Expediente Personal</div>
-          <h1 className={styles.title}>
-            Mi <span>Expediente</span>
-          </h1>
-          <div className={styles.ornament}>
-            <div className={styles.line} />
-            <div className={styles.diamond} />
-            <div className={styles.lineR} />
+      {/* Header */}
+      <div className={styles.header}>
+        <div className={styles.hCorner + " " + styles.tl} />
+        <div className={styles.hCorner + " " + styles.tr} />
+        <div className={styles.headerContent}>
+          <div className={styles.eyebrow}>
+            Plataforma descentralizada · Contratos &amp; Mercados
           </div>
-          <p className={styles.addr}>
-            {address ? `${address.slice(0, 8)}…${address.slice(-6)}` : "—"}
-          </p>
+          <Link to="/dashboard" className={styles.headerLogo}>
+            <img
+              src="/minka_logo.png"
+              alt="Minka"
+              className={styles.headerLogoImg}
+            />
+          </Link>
+          <p className={styles.sub}>Contratos · Apuestas · Gobernanza</p>
+          <div className={styles.headerRight}>
+            <WalletButton />
+          </div>
         </div>
+      </div>
 
+      {/* Navbar */}
+      <Navbar />
+
+      {/* Content */}
+      <div className={styles.content}>
         {/* Stats */}
         <div className={styles.stats}>
           <div className={styles.statCard}>
             <div className={styles.statLbl}>Reputación</div>
-            <div className={styles.statVal} style={{ color: "var(--gold)" }}>
+            <div className={styles.statVal} style={{ color: "var(--accent)" }}>
               {usuario?.reputacion_score || 0}
             </div>
             <div className={styles.statSub}>
