@@ -1,0 +1,111 @@
+.bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.group {
+  display: flex;
+  border: 1px solid var(--bd-hi);
+  overflow: hidden;
+  background: var(--paper3);
+}
+.btn {
+  font-family: "Cinzel", serif;
+  font-size: 8px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  padding: 7px 16px;
+  background: transparent;
+  color: var(--ink3);
+  border: none;
+  border-right: 1px solid var(--bd);
+  cursor: pointer;
+  transition: all 0.18s;
+}
+.btn:last-child {
+  border-right: none;
+}
+.btn:hover {
+  background: var(--gold-bg);
+  color: var(--ink);
+}
+.active {
+  background: var(--ink);
+  color: var(--gold-l);
+}
+
+.select {
+  font-family: "Cinzel", serif;
+  font-size: 8px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 7px 12px;
+  background: var(--paper3);
+  border: 1px solid var(--bd-hi);
+  color: var(--ink3);
+  cursor: pointer;
+  outline: none;
+}
+.select:focus {
+  border-color: var(--gold-b);
+}
+
+.visGroup {
+  display: flex;
+  border: 1px solid var(--bd);
+  overflow: hidden;
+}
+.visBtnSmall {
+  font-family: "Courier Prime", monospace;
+  font-size: 9px;
+  padding: 6px 12px;
+  background: transparent;
+  color: var(--ink3);
+  border: none;
+  border-right: 1px solid var(--bd);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.visBtnSmall:last-child {
+  border-right: none;
+}
+.visBtnSmall:hover {
+  background: var(--gold-bg);
+}
+.visActive {
+  background: var(--paper2);
+  color: var(--ink);
+  font-weight: 700;
+}
+
+.btnPublicar {
+  font-family: "Cinzel", serif;
+  font-size: 9px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  padding: 9px 20px;
+  background: var(--ink);
+  color: var(--gold-l);
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.btnPublicar:hover {
+  background: #2e2010;
+}

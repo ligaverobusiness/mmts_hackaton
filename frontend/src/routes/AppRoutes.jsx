@@ -1,13 +1,10 @@
 import { Routes, Route } from "react-router-dom";
 import WalletGuard from "../components/wallet/WalletGuard";
+import Layout from "../components/layout/Layout";
 import Landing from "../pages/Landing";
+import Dashboard from "../pages/Dashboard";
 
-// Placeholders para bloques futuros — los iremos completando
-const Dashboard = () => (
-  <div style={{ padding: 40, fontFamily: "Cinzel,serif" }}>
-    Dashboard — Bloque 2
-  </div>
-);
+// Placeholders — se reemplazan en bloques siguientes
 const DetalleContrato = () => (
   <div style={{ padding: 40, fontFamily: "Cinzel,serif" }}>
     Detalle Contrato — Bloque 3
@@ -39,64 +36,69 @@ const AccesoPrivado = () => (
   </div>
 );
 
+function Protected({ children }) {
+  return (
+    <WalletGuard>
+      <Layout>{children}</Layout>
+    </WalletGuard>
+  );
+}
+
 export default function AppRoutes() {
   return (
     <Routes>
-      {/* Pública */}
       <Route path="/" element={<Landing />} />
       <Route path="/privado/:token" element={<AccesoPrivado />} />
 
-      {/* Protegidas — requieren wallet */}
       <Route
         path="/dashboard"
         element={
-          <WalletGuard>
+          <Protected>
             <Dashboard />
-          </WalletGuard>
+          </Protected>
         }
       />
       <Route
         path="/contrato/:id"
         element={
-          <WalletGuard>
+          <Protected>
             <DetalleContrato />
-          </WalletGuard>
+          </Protected>
         }
       />
       <Route
         path="/apuesta/:id"
         element={
-          <WalletGuard>
+          <Protected>
             <DetalleApuesta />
-          </WalletGuard>
+          </Protected>
         }
       />
       <Route
         path="/civico/:id"
         element={
-          <WalletGuard>
+          <Protected>
             <DetalleCivico />
-          </WalletGuard>
+          </Protected>
         }
       />
       <Route
         path="/expediente"
         element={
-          <WalletGuard>
+          <Protected>
             <MiExpediente />
-          </WalletGuard>
+          </Protected>
         }
       />
       <Route
         path="/perfil/:address"
         element={
-          <WalletGuard>
+          <Protected>
             <Perfil />
-          </WalletGuard>
+          </Protected>
         }
       />
 
-      {/* 404 */}
       <Route
         path="*"
         element={

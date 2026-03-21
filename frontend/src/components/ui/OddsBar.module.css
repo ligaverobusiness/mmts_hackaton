@@ -1,0 +1,48 @@
+.wrap {
+  margin-top: 5px;
+}
+.track {
+  height: 3px;
+  background: var(--bd);
+  border-radius: 2px;
+  overflow: hidden;
+  display: flex;
+}
+.seg {
+  height: 100%;
+  opacity: 0.55;
+}
+.labels {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 3px;
+  gap: 6px;
+}
+.lbl {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  font-family: "Courier Prime", monospace;
+  font-size: 8px;
+}
+.dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.name {
+  color: var(--ink3);
+}
+.mult {
+  font-weight: 700;
+}
+.hi {
+  color: var(--green);
+}
+.mi {
+  color: var(--amber);
+}
+.lo {
+  color: var(--red);
+}

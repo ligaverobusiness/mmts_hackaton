@@ -1,0 +1,14 @@
+.countdown {
+  font-family: "Courier Prime", monospace;
+  font-size: 11px;
+  color: var(--ink3);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.expiring {
+  color: var(--red);
+  animation: blink 1s infinite;
+}
+.expired {
+  color: var(--ink4);
+}
