@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useWallet } from "../context/WalletContext";
 import styles from "./Landing.module.css";
@@ -6,119 +6,134 @@ import styles from "./Landing.module.css";
 export default function Landing() {
   const { isConnected, isLoading, connectWallet } = useWallet();
   const [error, setError] = useState("");
+  const [transitioning, setTransitioning] = useState(false);
   const navigate = useNavigate();
+  const logoRef = useRef(null);
 
-  // Si ya está conectado → ir al dashboard
   useEffect(() => {
-    if (isConnected) navigate("/dashboard", { replace: true });
-  }, [isConnected, navigate]);
+    if (isConnected && !transitioning) {
+      setTransitioning(true);
+      // Wait for the shrink/move animation to finish before navigating
+      setTimeout(() => {
+        navigate("/dashboard", { replace: true });
+      }, 1400);
+    }
+  }, [isConnected, navigate, transitioning]);
 
   const handleConnect = async () => {
     setError("");
     try {
       await connectWallet();
-      // El useEffect de arriba se encarga del redirect
     } catch (err) {
       setError(err.message);
     }
   };
 
   return (
-    <div className={styles.page}>
-      {/* Esquinas decorativas */}
-      <div className={`${styles.corner} ${styles.tl}`} />
-      <div className={`${styles.corner} ${styles.tr}`} />
-      <div className={`${styles.corner} ${styles.bl}`} />
-      <div className={`${styles.corner} ${styles.br}`} />
+    <div className={`${styles.page} ${transitioning ? styles.transitioning : ""}`}>
+      {/* Video background */}
+      <video
+        className={styles.videoBg}
+        src="/1115482_Woman_Indoor_3840x2160.mov"
+        autoPlay
+        muted
+        loop
+        playsInline
+      />
 
+      {/* Dark overlay */}
+      <div className={styles.overlay} />
+
+      {/* Floating particles */}
+      <div className={styles.particles}>
+        {[...Array(20)].map((_, i) => (
+          <span
+            key={i}
+            className={styles.particle}
+            style={{
+              left: `${Math.random() * 100}%`,
+              animationDelay: `${Math.random() * 8}s`,
+              animationDuration: `${6 + Math.random() * 8}s`,
+              width: `${2 + Math.random() * 4}px`,
+              height: `${2 + Math.random() * 4}px`,
+            }}
+          />
+        ))}
+      </div>
+
+      {/* Main content */}
       <div className={styles.content}>
         {/* Eyebrow */}
-        <p className={styles.eyebrow}>
+        <p className={`${styles.eyebrow} ${transitioning ? styles.fadeOutUp : ""}`}>
           Plataforma descentralizada · Contratos &amp; Mercados
         </p>
 
-        {/* Título */}
-        <div className={styles.ornament}>
-          <div className={styles.line} />
-          <div className={styles.diamond} />
-          <div className={`${styles.line} ${styles.lineR}`} />
-        </div>
-        <h1 className={styles.title}>
-          El <span>Tablero</span>
-        </h1>
-        <div className={styles.ornament}>
-          <div className={styles.line} />
-          <div className={styles.diamond} />
-          <div className={`${styles.line} ${styles.lineR}`} />
+        {/* Logo */}
+        <div
+          ref={logoRef}
+          className={`${styles.logoWrap} ${transitioning ? styles.logoTransition : ""}`}
+        >
+          <img
+            src="/minka_logo.png"
+            alt="Minka"
+            className={styles.logo}
+          />
         </div>
 
-        {/* Subtítulo */}
-        <p className={styles.subtitle}>
-          Contratos verificados por IA · Apuestas con escrow real
+        {/* Subtitle */}
+        <p className={`${styles.subtitle} ${transitioning ? styles.fadeOutUp : ""}`}>
+          Contratos · Apuestas · Gobernanza
         </p>
-        <p className={styles.description}>
-          Publica contratos de trabajo que se pagan automáticamente cuando los
-          jueces validan la entrega. Participa en mercados de predicción
-          descentralizados. Todo on-chain, sin intermediarios.
-        </p>
-
-        {/* Tres pilares */}
-        <div className={styles.pillars}>
-          <div className={styles.pillar}>
-            <span className={styles.pillarIcon}>◆</span>
-            <span className={styles.pillarTitle}>Contratos</span>
-            <span className={styles.pillarDesc}>
-              5 jueces IA evalúan la entrega y liberan el pago automáticamente
-            </span>
-          </div>
-          <div className={styles.pillarDivider} />
-          <div className={styles.pillar}>
-            <span className={styles.pillarIcon}>◈</span>
-            <span className={styles.pillarTitle}>Apuestas</span>
-            <span className={styles.pillarDesc}>
-              Mercados de predicción con odds dinámicos y pozo compartido
-            </span>
-          </div>
-          <div className={styles.pillarDivider} />
-          <div className={styles.pillar}>
-            <span className={styles.pillarIcon}>⬡</span>
-            <span className={styles.pillarTitle}>Gobernanza</span>
-            <span className={styles.pillarDesc}>
-              Propuestas cívicas con fondos retenidos hasta que la comunidad
-              decida
-            </span>
-          </div>
-        </div>
 
         {/* CTA */}
-        <div className={styles.cta}>
+        <div className={`${styles.cta} ${transitioning ? styles.fadeOutDown : ""}`}>
           <button
             className={styles.btnConnect}
             onClick={handleConnect}
-            disabled={isLoading}
+            disabled={isLoading || transitioning}
           >
             {isLoading ? (
               <>
                 <span className={styles.spinner} />
                 Conectando…
               </>
+            ) : transitioning ? (
+              <>
+                <span className={styles.checkmark}>✓</span>
+                Conectado
+              </>
             ) : (
-              "⬡ Conectar MetaMask"
+              <>
+                <span className={styles.walletIcon}>
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <rect x="2" y="6" width="20" height="14" rx="2" />
+                    <path d="M2 10h20" />
+                    <circle cx="18" cy="14" r="1" />
+                  </svg>
+                </span>
+                Conectar MetaMask
+              </>
             )}
           </button>
           {error && <p className={styles.error}>{error}</p>}
           {!window.ethereum?.isMetaMask && (
             <p className={styles.noMetaMask}>
-              No tienes MetaMask instalado. href="https://metamask.io"
-              target="_blank" rel="noreferrer" className={styles.link}
-              <a>Instálalo aquí →</a>
+              No tienes MetaMask instalado.{" "}
+              <a href="https://metamask.io" target="_blank" rel="noreferrer" className={styles.link}>
+                Instálalo aquí →
+              </a>
             </p>
           )}
         </div>
 
         {/* Footer */}
-        <p className={styles.footer}>Powered by GenLayer · Testnet Bradbury</p>
+        <p className={`${styles.footer} ${transitioning ? styles.fadeOutDown : ""}`}>
+          Powered by GenLayer · Testnet Bradbury
+        </p>
       </div>
+
+      {/* Screen wipe overlay for transition */}
+      {transitioning && <div className={styles.wipe} />}
     </div>
   );
 }
