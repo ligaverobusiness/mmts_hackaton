@@ -1,0 +1,90 @@
+.tableWrap {
+  overflow-x: auto;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.thead {
+  background: var(--ink);
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+.thead th {
+  font-family: "Cinzel", serif;
+  font-size: 7.5px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: rgba(243, 235, 224, 0.6);
+  padding: 10px 11px;
+  text-align: left;
+  white-space: nowrap;
+  font-weight: 400;
+}
+
+.table td {
+  padding: 11px;
+  font-size: 12px;
+  vertical-align: middle;
+}
+
+.state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px;
+  gap: 14px;
+}
+.spinner {
+  width: 24px;
+  height: 24px;
+  border: 2px solid var(--bd-hi);
+  border-top-color: var(--gold);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+.stateText {
+  font-family: "Cinzel", serif;
+  font-size: 10px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--ink3);
+}
+
+.empty {
+  text-align: center;
+  padding: 60px;
+}
+.emptyTitle {
+  font-family: "Cinzel", serif;
+  font-size: 12px;
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  color: var(--ink3);
+}
+.emptySub {
+  font-size: 11px;
+  color: var(--ink4);
+  font-style: italic;
+  margin-top: 8px;
+}
+.emptyBtn {
+  margin-top: 20px;
+  font-family: "Cinzel", serif;
+  font-size: 9px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  padding: 10px 22px;
+  background: var(--ink);
+  color: var(--gold-l);
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.emptyBtn:hover {
+  background: #2e2010;
+}

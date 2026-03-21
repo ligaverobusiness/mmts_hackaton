@@ -1,0 +1,39 @@
+.container {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  z-index: 200;
+}
+.toast {
+  font-family: "Cinzel", serif;
+  font-size: 9px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 13px 20px;
+  max-width: 400px;
+  box-shadow: 0 4px 24px rgba(28, 18, 9, 0.25);
+  border-left: 3px solid;
+  animation: fadeUp 0.3s ease;
+}
+.info {
+  background: var(--ink);
+  color: var(--gold-l);
+  border-color: var(--gold-b);
+}
+.success {
+  background: var(--paper3);
+  color: var(--green);
+  border-color: var(--green);
+  border: 1px solid rgba(26, 92, 52, 0.3);
+  border-left: 3px solid var(--green);
+}
+.error {
+  background: var(--paper3);
+  color: var(--red);
+  border-color: var(--red);
+  border: 1px solid rgba(139, 26, 42, 0.3);
+  border-left: 3px solid var(--red);
+}

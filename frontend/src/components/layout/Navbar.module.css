@@ -1,0 +1,50 @@
+.nav {
+  background: var(--ink);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 32px;
+  height: 52px;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  border-bottom: 1px solid rgba(201, 168, 76, 0.12);
+}
+
+.logo {
+  font-family: "Cinzel", serif;
+  font-size: 14px;
+  font-weight: 900;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: rgba(243, 235, 224, 0.8);
+  text-decoration: none;
+}
+.logo span {
+  color: var(--gold-l);
+}
+
+.links {
+  display: flex;
+  gap: 0;
+}
+
+.link {
+  font-family: "Cinzel", serif;
+  font-size: 8px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  padding: 0 24px;
+  color: rgba(243, 235, 224, 0.45);
+  text-decoration: none;
+  line-height: 52px;
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s;
+}
+.link:hover {
+  color: rgba(243, 235, 224, 0.8);
+}
+.active {
+  color: var(--gold-l);
+  border-bottom-color: var(--gold-b);
+}
