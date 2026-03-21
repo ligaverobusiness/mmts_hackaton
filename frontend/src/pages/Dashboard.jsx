@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import Navbar from "../components/layout/Navbar";
 import TopSidebar from "../components/dashboard/TopSidebar";
 import FilterBar from "../components/dashboard/FilterBar";
 import BoardTable from "../components/dashboard/BoardTable";
@@ -47,6 +48,8 @@ export default function Dashboard() {
           </div>
         </div>
       </div>
+
+      <Navbar />
 
       <div className={styles.main}>
         <TopSidebar />
