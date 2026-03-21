@@ -2,30 +2,14 @@
   background: var(--nav-bg);
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   padding: 0 32px;
-  height: 56px;
+  height: 46px;
   position: sticky;
   top: 0;
   z-index: 50;
   border-bottom: 1px solid rgba(255, 255, 255, 0.06);
   backdrop-filter: blur(12px);
-}
-
-.logo {
-  display: flex;
-  align-items: center;
-  text-decoration: none;
-  transition: all 0.3s;
-}
-.logo:hover {
-  opacity: 0.85;
-  transform: scale(1.03);
-}
-.logoImg {
-  height: 50px;
-  width: auto;
-  object-fit: contain;
 }
 
 .links {
@@ -42,7 +26,7 @@
   padding: 0 24px;
   color: rgba(255, 255, 255, 0.4);
   text-decoration: none;
-  line-height: 56px;
+  line-height: 46px;
   border-bottom: 2px solid transparent;
   transition: all 0.3s;
   position: relative;

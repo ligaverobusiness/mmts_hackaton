@@ -1,10 +1,12 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import TopSidebar from "../components/dashboard/TopSidebar";
 import FilterBar from "../components/dashboard/FilterBar";
 import BoardTable from "../components/dashboard/BoardTable";
 import ModalCrearContrato from "../components/modals/ModalCrearContrato";
 import ModalCrearCivico from "../components/modals/ModalCrearCivico";
 import ModalCrearApuesta from "../components/modals/ModalCrearApuesta";
+import WalletButton from "../components/wallet/WalletButton";
 import { useApp } from "../context/AppContext";
 import styles from "./Dashboard.module.css";
 
@@ -25,18 +27,25 @@ export default function Dashboard() {
       <div className={styles.header}>
         <div className={styles.hCorner + " " + styles.tl} />
         <div className={styles.hCorner + " " + styles.tr} />
-        <div className={styles.eyebrow}>
-          Plataforma descentralizada · Contratos &amp; Mercados
+        <div className={styles.headerContent}>
+          <Link to="/dashboard" className={styles.headerLogo}>
+            <img src="/minka_logo.png" alt="Minka" className={styles.headerLogoImg} />
+          </Link>
+          <div className={styles.headerCenter}>
+            <div className={styles.eyebrow}>
+              Plataforma descentralizada · Contratos &amp; Mercados
+            </div>
+            <div className={styles.ornament}>
+              <div className={styles.line} />
+              <div className={styles.diamond} />
+              <div className={`${styles.line} ${styles.lineR}`} />
+            </div>
+            <p className={styles.sub}>Contratos · Apuestas · Gobernanza</p>
+          </div>
+          <div className={styles.headerRight}>
+            <WalletButton />
+          </div>
         </div>
-        <h1 className={styles.title}>
-          El <span>Tablero</span>
-        </h1>
-        <div className={styles.ornament}>
-          <div className={styles.line} />
-          <div className={styles.diamond} />
-          <div className={`${styles.line} ${styles.lineR}`} />
-        </div>
-        <p className={styles.sub}>Contratos · Apuestas · Gobernanza</p>
       </div>
 
       <div className={styles.main}>
