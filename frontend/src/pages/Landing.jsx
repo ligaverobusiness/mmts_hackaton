@@ -109,9 +109,15 @@ export default function Landing() {
           {error && <p className={styles.error}>{error}</p>}
           {!window.ethereum?.isMetaMask && (
             <p className={styles.noMetaMask}>
-              No tienes MetaMask instalado. href="https://metamask.io"
-              target="_blank" rel="noreferrer" className={styles.link}
-              <a>Instálalo aquí →</a>
+              No tienes MetaMask instalado.{" "}
+              <a
+                href="https://metamask.io"
+                target="_blank"
+                rel="noreferrer"
+                className={styles.link}
+              >
+                Instálalo aquí →
+              </a>
             </p>
           )}
         </div>

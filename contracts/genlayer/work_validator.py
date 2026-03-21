@@ -1,35 +1,25 @@
-# work_validator.py — Intelligent Contract de GenLayer
-# Valida entregas de contratos de trabajo con consenso de IA
-
 from genlayer import gl
 import json
 
 
 class WorkValidator(gl.Contract):
-    """
-    Contrato inteligente que valida entregas de trabajo.
-    Cada instancia corresponde a un contrato de trabajo en Solidity.
-    """
 
-    # Datos del contrato
-    work_address: str       # Address del WorkCOFI en Solidity
-    title: str
-    conditions_ia: str      # Condiciones privadas — nunca se exponen
-    required_approvals: int # 3, 4, o 5
-    delivery_url: str
-    status: str             # pending | validated | rejected
-
-    # Resultado
-    is_approved: bool
-    summary: str
-    votes_yes: int
-    votes_no: int
+    work_address:       str
+    title:              str
+    conditions_ia:      str
+    required_approvals: int
+    delivery_url:       str
+    status:             str
+    is_approved:        bool
+    summary:            str
+    votes_yes:          int
+    votes_no:           int
 
     def __init__(
         self,
-        work_address: str,
-        title: str,
-        conditions_ia: str,
+        work_address:       str,
+        title:              str,
+        conditions_ia:      str,
         required_approvals: int,
     ):
         self.work_address       = work_address
@@ -43,25 +33,42 @@ class WorkValidator(gl.Contract):
         self.votes_yes          = 0
         self.votes_no           = 0
 
+    def _leer_url(self, url: str) -> str:
+        """Intenta leer el contenido de una URL. Devuelve string con lo que encontró."""
+        url = url.strip()
+        if not url:
+            return ""
+        try:
+            content = gl.get_webpage(url)
+            return content[:4000] if len(content) > 4000 else content
+        except Exception:
+            return f"[No se pudo acceder a: {url}]"
+
+    def _extraer_urls(self, delivery_url: str) -> list:
+        """Extrae URLs individuales de un string que puede tener varias separadas por saltos de línea."""
+        urls = [u.strip() for u in delivery_url.split('\n') if u.strip()]
+        # Filtrar solo los que parecen URLs
+        return [u for u in urls if u.startswith('http') or u.startswith('ipfs')]
+
     @gl.public.write
     def validate_delivery(self, delivery_url: str) -> dict:
-        """
-        Llamado cuando el freelancer entrega el trabajo.
-        5 validadores IA evalúan si cumple las condiciones.
-        """
         assert self.status == "pending", "Ya fue validado"
-        assert len(delivery_url) > 0, "URL de entrega vacía"
+        assert len(delivery_url) > 0,    "URL de entrega vacía"
 
         self.delivery_url = delivery_url
+        urls = self._extraer_urls(delivery_url)
 
         @gl.nondet
         def evaluate() -> str:
-            # Intenta leer el contenido del link entregado
-            try:
-                content = gl.get_webpage(delivery_url)
-                content_preview = content[:3000] if len(content) > 3000 else content
-            except Exception:
-                content_preview = f"No se pudo acceder a: {delivery_url}"
+            # Leer contenido de todas las URLs entregadas
+            contenidos = []
+            for i, url in enumerate(urls[:5]):  # máximo 5 URLs
+                contenido = self._leer_url(url)
+                if contenido:
+                    contenidos.append(f"RECURSO {i+1} ({url}):\n{contenido}")
+
+            contenido_total = "\n\n".join(contenidos) if contenidos else \
+                f"No se pudieron acceder a las URLs: {delivery_url}"
 
             prompt = f"""
 Eres un juez imparcial evaluando la entrega de un trabajo freelance.
@@ -72,29 +79,31 @@ TÍTULO DEL CONTRATO:
 CONDICIONES ESPECÍFICAS QUE DEBE CUMPLIR LA ENTREGA:
 {self.conditions_ia}
 
-URL/REFERENCIA DE LA ENTREGA:
+URLS/ARCHIVOS ENTREGADOS:
 {delivery_url}
 
-CONTENIDO ENCONTRADO (si aplica):
-{content_preview}
+CONTENIDO LEÍDO DE LOS RECURSOS:
+{contenido_total}
 
-TAREA:
+INSTRUCCIONES DE EVALUACIÓN:
 1. Evalúa si la entrega cumple TODAS las condiciones especificadas.
-2. Sé estricto con los requisitos cuantitativos (número de páginas, palabras, referencias, etc).
-3. Si la URL no es accesible, evalúa solo con la información disponible.
+2. Si se entregaron imágenes o archivos visuales, evalúa su contenido visible.
+3. Si se entregaron PDFs o documentos, evalúa el texto extraído.
+4. Si se entregó código, evalúa si cumple los requisitos técnicos.
+5. Sé estricto con requisitos cuantitativos (palabras, páginas, formatos, etc).
+6. Si no puedes acceder a algún recurso, indica que no pudiste verificarlo.
+7. Si NINGÚN recurso fue accesible, rechaza la entrega.
 
 RESPONDE ÚNICAMENTE con un JSON válido con este formato exacto:
 {{
   "decision": "si" o "no",
-  "summary": "Resumen en 1-2 oraciones de por qué aprueba o rechaza"
+  "summary": "Resumen en 2-3 oraciones de por qué aprueba o rechaza, mencionando qué recursos revisaste"
 }}
 
 No agregues texto antes ni después del JSON.
 """
-            result = gl.exec_prompt(prompt)
-            return result
+            return gl.exec_prompt(prompt)
 
-        # Aplicar Equivalence Principle — los 5 validadores deben coincidir
         final = gl.eq_principle_prompt_comparative(
             evaluate,
             principle=(
@@ -105,13 +114,11 @@ No agregues texto antes ni después del JSON.
             ),
         )
 
-        # Parsear resultado
         try:
-            parsed = json.loads(final)
+            parsed   = json.loads(final)
             decision = parsed.get("decision", "no").lower().strip()
             summary  = parsed.get("summary", "Sin resumen disponible")
         except Exception:
-            # Si el JSON no es válido, buscamos si/no en el texto
             decision = "si" if "si" in final.lower()[:20] else "no"
             summary  = final[:200]
 
@@ -120,8 +127,8 @@ No agregues texto antes ni después del JSON.
         self.status      = "validated" if self.is_approved else "rejected"
 
         return {
-            "approved": self.is_approved,
-            "summary":  self.summary,
+            "approved":     self.is_approved,
+            "summary":      self.summary,
             "work_address": self.work_address,
         }
 
