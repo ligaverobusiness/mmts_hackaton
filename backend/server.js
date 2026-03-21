@@ -15,6 +15,7 @@ app.use("/api/usuarios", require("./routes/usuarios"));
 app.use("/api/contratos", require("./routes/contratos"));
 app.use("/api/apuestas", require("./routes/apuestas"));
 app.use("/api/civico", require("./routes/civico"));
+app.use("/api/privado", require("./routes/privado"));
 
 app.get("/health", (req, res) => res.json({ ok: true }));
 app.use(errorHandler);
