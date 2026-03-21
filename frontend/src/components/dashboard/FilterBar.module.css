@@ -2,7 +2,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 16px;
+  margin-bottom: 20px;
   gap: 12px;
   flex-wrap: wrap;
 }
@@ -10,7 +10,7 @@
 .left {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
   flex-wrap: wrap;
 }
 .right {
@@ -21,91 +21,104 @@
 
 .group {
   display: flex;
-  border: 1px solid var(--bd-hi);
+  border-radius: var(--radius-sm);
   overflow: hidden;
-  background: var(--paper3);
+  background: var(--bg2);
+  border: 1px solid var(--bd);
 }
 .btn {
-  font-family: "Cinzel", serif;
-  font-size: 8px;
-  letter-spacing: 3px;
+  font-family: "Montserrat", sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 1px;
   text-transform: uppercase;
-  padding: 7px 16px;
+  padding: 8px 16px;
   background: transparent;
-  color: var(--ink3);
+  color: var(--text3);
   border: none;
   border-right: 1px solid var(--bd);
   cursor: pointer;
-  transition: all 0.18s;
+  transition: all 0.25s;
 }
 .btn:last-child {
   border-right: none;
 }
 .btn:hover {
-  background: var(--gold-bg);
-  color: var(--ink);
+  background: rgba(124, 92, 252, 0.1);
+  color: var(--text);
 }
 .active {
-  background: var(--ink);
-  color: var(--gold-l);
+  background: var(--accent) !important;
+  color: #fff !important;
 }
 
 .select {
-  font-family: "Cinzel", serif;
-  font-size: 8px;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  padding: 7px 12px;
-  background: var(--paper3);
-  border: 1px solid var(--bd-hi);
-  color: var(--ink3);
+  font-family: "Montserrat", sans-serif;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 1px;
+  padding: 8px 14px;
+  background: var(--bg2);
+  border: 1px solid var(--bd);
+  border-radius: var(--radius-sm);
+  color: var(--text2);
   cursor: pointer;
   outline: none;
+  transition: border-color 0.2s;
 }
 .select:focus {
-  border-color: var(--gold-b);
+  border-color: var(--accent);
+}
+.select option {
+  background: var(--bg2);
+  color: var(--text);
 }
 
 .visGroup {
   display: flex;
-  border: 1px solid var(--bd);
+  border-radius: var(--radius-sm);
   overflow: hidden;
+  border: 1px solid var(--bd);
 }
 .visBtnSmall {
-  font-family: "Courier Prime", monospace;
-  font-size: 9px;
-  padding: 6px 12px;
+  font-family: "Montserrat", sans-serif;
+  font-size: 10px;
+  font-weight: 500;
+  padding: 7px 14px;
   background: transparent;
-  color: var(--ink3);
+  color: var(--text3);
   border: none;
   border-right: 1px solid var(--bd);
   cursor: pointer;
-  transition: all 0.15s;
+  transition: all 0.2s;
 }
 .visBtnSmall:last-child {
   border-right: none;
 }
 .visBtnSmall:hover {
-  background: var(--gold-bg);
+  background: rgba(255, 255, 255, 0.05);
 }
 .visActive {
-  background: var(--paper2);
-  color: var(--ink);
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text);
   font-weight: 700;
 }
 
 .btnPublicar {
-  font-family: "Cinzel", serif;
-  font-size: 9px;
-  letter-spacing: 3px;
+  font-family: "Montserrat", sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
   text-transform: uppercase;
-  padding: 9px 20px;
-  background: var(--ink);
-  color: var(--gold-l);
+  padding: 10px 24px;
+  background: linear-gradient(135deg, var(--accent), #9333ea);
+  color: #fff;
   border: none;
+  border-radius: var(--radius-sm);
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.3s;
 }
 .btnPublicar:hover {
-  background: #2e2010;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 20px var(--accent-glow);
 }

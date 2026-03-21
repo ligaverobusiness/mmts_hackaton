@@ -1,7 +1,8 @@
 .countdown {
-  font-family: "Courier Prime", monospace;
-  font-size: 11px;
-  color: var(--ink3);
+  font-family: "Montserrat", sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text2);
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
 }
@@ -10,5 +11,5 @@
   animation: blink 1s infinite;
 }
 .expired {
-  color: var(--ink4);
+  color: var(--text4);
 }

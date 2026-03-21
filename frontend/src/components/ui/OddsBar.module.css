@@ -2,28 +2,28 @@
   margin-top: 5px;
 }
 .track {
-  height: 3px;
+  height: 4px;
   background: var(--bd);
-  border-radius: 2px;
+  border-radius: 3px;
   overflow: hidden;
   display: flex;
 }
 .seg {
   height: 100%;
-  opacity: 0.55;
+  opacity: 0.7;
 }
 .labels {
   display: flex;
   justify-content: space-between;
-  margin-top: 3px;
+  margin-top: 4px;
   gap: 6px;
 }
 .lbl {
   display: flex;
   align-items: center;
   gap: 3px;
-  font-family: "Courier Prime", monospace;
-  font-size: 8px;
+  font-family: "Montserrat", sans-serif;
+  font-size: 9px;
 }
 .dot {
   width: 6px;
@@ -32,7 +32,7 @@
   flex-shrink: 0;
 }
 .name {
-  color: var(--ink3);
+  color: var(--text3);
 }
 .mult {
   font-weight: 700;

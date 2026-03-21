@@ -8,32 +8,33 @@
   z-index: 200;
 }
 .toast {
-  font-family: "Cinzel", serif;
-  font-size: 9px;
-  letter-spacing: 2px;
-  text-transform: uppercase;
+  font-family: "Montserrat", sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1px;
   padding: 13px 20px;
   max-width: 400px;
-  box-shadow: 0 4px 24px rgba(28, 18, 9, 0.25);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
   border-left: 3px solid;
+  border-radius: var(--radius-sm);
   animation: fadeUp 0.3s ease;
 }
 .info {
-  background: var(--ink);
-  color: var(--gold-l);
-  border-color: var(--gold-b);
+  background: var(--bg3);
+  color: var(--accent-light);
+  border-color: var(--accent);
 }
 .success {
-  background: var(--paper3);
+  background: var(--bg3);
   color: var(--green);
   border-color: var(--green);
-  border: 1px solid rgba(26, 92, 52, 0.3);
+  border: 1px solid rgba(74, 222, 128, 0.3);
   border-left: 3px solid var(--green);
 }
 .error {
-  background: var(--paper3);
+  background: var(--bg3);
   color: var(--red);
   border-color: var(--red);
-  border: 1px solid rgba(139, 26, 42, 0.3);
+  border: 1px solid rgba(248, 113, 113, 0.3);
   border-left: 3px solid var(--red);
 }
