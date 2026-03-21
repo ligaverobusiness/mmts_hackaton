@@ -429,6 +429,88 @@
       "artifacts": [
         "IWorkFactoryCOFI"
       ]
+    },
+    "C:\\Users\\Usuario\\Desktop\\proyecto_hackaton\\contracts\\contracts\\CivicoCOFI.sol": {
+      "lastModificationDate": 1774065764609,
+      "contentHash": "c39dbe7e3f9ee99fbb1d276652de9311",
+      "sourceName": "contracts/CivicoCOFI.sol",
+      "solcConfig": {
+        "version": "0.8.22",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "viaIR": true,
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "@openzeppelin/contracts/token/ERC20/IERC20.sol",
+        "@openzeppelin/contracts/utils/ReentrancyGuard.sol",
+        "@openzeppelin/contracts/access/Ownable.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.22"
+      ],
+      "artifacts": [
+        "CivicoCOFI"
+      ]
+    },
+    "C:\\Users\\Usuario\\Desktop\\proyecto_hackaton\\contracts\\contracts\\CivicoFactoryCOFI.sol": {
+      "lastModificationDate": 1774065782228,
+      "contentHash": "3b8e0e359e3035243f9d037521d6c942",
+      "sourceName": "contracts/CivicoFactoryCOFI.sol",
+      "solcConfig": {
+        "version": "0.8.22",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "viaIR": true,
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "./CivicoCOFI.sol",
+        "@openzeppelin/contracts/token/ERC20/IERC20.sol",
+        "@openzeppelin/contracts/access/Ownable.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.22"
+      ],
+      "artifacts": [
+        "CivicoFactoryCOFI"
+      ]
     }
   }
 }

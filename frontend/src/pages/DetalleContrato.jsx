@@ -1,8 +1,8 @@
-import { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { useWallet }    from '../context/WalletContext';
-import { useToast }     from '../context/ToastContext';
-import { useApp }       from '../context/AppContext';
+import { useEffect, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import { useWallet } from "../context/WalletContext";
+import { useToast } from "../context/ToastContext";
+import { useApp } from "../context/AppContext";
 import {
   getContratoById,
   getCondicionesIA,
@@ -10,12 +10,12 @@ import {
   solicitarValidacion,
   aumentarMonto,
   cancelarContrato,
-} from '../services/contratos';
-import { validateDelivery, pollValidation } from '../services/genlayer';
-import ValidadoresPanel from '../components/validadores/ValidadoresPanel';
-import Badge            from '../components/ui/Badge';
-import Countdown        from '../components/ui/Countdown';
-import styles           from './DetalleContrato.module.css';
+} from "../services/contratos";
+import { validateDelivery, pollValidation } from "../services/genlayer";
+import ValidadoresPanel from "../components/validadores/ValidadoresPanel";
+import Badge from "../components/ui/Badge";
+import Countdown from "../components/ui/Countdown";
+import styles from "./DetalleContrato.module.css";
 
 function fmt(n) {
   if (n >= 1e6) return `$${(n / 1e6).toFixed(1)}M`;
@@ -24,27 +24,27 @@ function fmt(n) {
 }
 
 export default function DetalleContrato() {
-  const { id }            = useParams();
-  const navigate          = useNavigate();
-  const { address }       = useWallet();
-  const { toast }         = useToast();
-  const { refresh }       = useApp();
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const { address } = useWallet();
+  const { toast } = useToast();
+  const { refresh } = useApp();
 
-  const [contrato,    setContrato]    = useState(null);
-  const [condIa,      setCondIa]      = useState(null);
-  const [loading,     setLoading]     = useState(true);
-  const [txLoading,   setTxLoading]   = useState(false);
+  const [contrato, setContrato] = useState(null);
+  const [condIa, setCondIa] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [txLoading, setTxLoading] = useState(false);
 
   // Entrega
-  const [deliveryUrl, setDeliveryUrl] = useState('');
+  const [deliveryUrl, setDeliveryUrl] = useState("");
 
   // Aumentar monto
   const [showAumento, setShowAumento] = useState(false);
-  const [montoExtra,  setMontoExtra]  = useState('');
+  const [montoExtra, setMontoExtra] = useState("");
 
   // Validación GenLayer
   const [isValidating, setIsValidating] = useState(false);
-  const [validResult,  setValidResult]  = useState(null);
+  const [validResult, setValidResult] = useState(null);
 
   // Cargar datos
   useEffect(() => {
@@ -63,10 +63,10 @@ export default function DetalleContrato() {
         }
 
         // Si está validando, iniciar polling
-        if (data.status === 'resolving' && data.genlayerAddress) {
+        if (data.status === "resolving" && data.genlayerAddress) {
           setIsValidating(true);
           const stopPoll = pollValidation(data.genlayerAddress, (result) => {
-            if (result.status !== 'pending') {
+            if (result.status !== "pending") {
               setIsValidating(false);
               setValidResult(result);
               stopPoll();
@@ -82,17 +82,23 @@ export default function DetalleContrato() {
     load();
   }, [id, address]);
 
-  const isCreator  = address && contrato?.creator?.toLowerCase() === address.toLowerCase();
-  const isExecutor = address && contrato?.executor?.toLowerCase() === address.toLowerCase();
-  const isActive   = contrato?.status === 'open' || contrato?.status === 'pending';
+  const isCreator =
+    address && contrato?.creator?.toLowerCase() === address.toLowerCase();
+  const isExecutor =
+    address && contrato?.executor?.toLowerCase() === address.toLowerCase();
+  const isActive =
+    contrato?.status === "open" || contrato?.status === "pending";
 
   // Entregar trabajo
   const handleEntregar = async () => {
-    if (!deliveryUrl.trim()) { toast.error('Ingresa el link o hash de entrega'); return; }
+    if (!deliveryUrl.trim()) {
+      toast.error("Ingresa el link o hash de entrega");
+      return;
+    }
     setTxLoading(true);
     try {
       await entregarTrabajo(id, deliveryUrl);
-      toast.success('Entrega enviada on-chain');
+      toast.success("Entrega enviada on-chain");
       const updated = await getContratoById(id);
       setContrato(updated);
     } catch (err) {
@@ -108,7 +114,7 @@ export default function DetalleContrato() {
     try {
       await solicitarValidacion(id);
       setIsValidating(true);
-      toast.info('Validación iniciada — Los jueces IA están evaluando…');
+      toast.info("Validación iniciada — Los jueces IA están evaluando…");
       const updated = await getContratoById(id);
       setContrato(updated);
     } catch (err) {
@@ -121,14 +127,15 @@ export default function DetalleContrato() {
   // Aumentar monto
   const handleAumento = async () => {
     if (!montoExtra || isNaN(Number(montoExtra)) || Number(montoExtra) <= 0) {
-      toast.error('Ingresa un monto válido'); return;
+      toast.error("Ingresa un monto válido");
+      return;
     }
     setTxLoading(true);
     try {
       await aumentarMonto(id, Number(montoExtra));
       toast.success(`+$${montoExtra} USDC añadido al contrato`);
       setShowAumento(false);
-      setMontoExtra('');
+      setMontoExtra("");
       const updated = await getContratoById(id);
       setContrato(updated);
     } catch (err) {
@@ -140,13 +147,18 @@ export default function DetalleContrato() {
 
   // Cancelar
   const handleCancelar = async () => {
-    if (!window.confirm('¿Confirmas cancelar este contrato? Los fondos te serán devueltos.')) return;
+    if (
+      !window.confirm(
+        "¿Confirmas cancelar este contrato? Los fondos te serán devueltos.",
+      )
+    )
+      return;
     setTxLoading(true);
     try {
       await cancelarContrato(id);
-      toast.success('Contrato cancelado — fondos devueltos');
+      toast.success("Contrato cancelado — fondos devueltos");
       await refresh();
-      navigate('/dashboard');
+      navigate("/dashboard");
     } catch (err) {
       toast.error(err.message);
     } finally {
@@ -166,7 +178,7 @@ export default function DetalleContrato() {
   if (!contrato) {
     return (
       <div className={styles.loading}>
-        <p style={{ color: 'var(--red)' }}>Contrato no encontrado.</p>
+        <p style={{ color: "var(--red)" }}>Contrato no encontrado.</p>
       </div>
     );
   }
@@ -174,26 +186,33 @@ export default function DetalleContrato() {
   return (
     <div className={styles.page}>
       <div className={styles.content}>
-
         {/* Header */}
         <div className={styles.header}>
           <div className={styles.headerLeft}>
-            <button className={styles.back} onClick={() => navigate('/dashboard')}>
+            <button
+              className={styles.back}
+              onClick={() => navigate("/dashboard")}
+            >
               ← Volver
             </button>
             <div className={styles.mainTitle}>{contrato.title}</div>
             <div className={styles.badges}>
               <span className={styles.ttag}>CONTRATO</span>
               <Badge status={contrato.status} />
-              {contrato.isPrivate || contrato.es_privado
-                ? <span className={styles.priv}>⬡ PRIVADO</span>
-                : <span className={styles.pub}>◎ PÚBLICO</span>
-              }
-              <span className={styles.cat}>{contrato.category || contrato.categoria}</span>
+              {contrato.isPrivate || contrato.es_privado ? (
+                <span className={styles.priv}>⬡ PRIVADO</span>
+              ) : (
+                <span className={styles.pub}>◎ PÚBLICO</span>
+              )}
+              <span className={styles.cat}>
+                {contrato.category || contrato.categoria}
+              </span>
             </div>
           </div>
           <div className={styles.headerRight}>
-            <div className={styles.bounty}>{fmt(contrato.bounty || contrato.amount || 0)}</div>
+            <div className={styles.bounty}>
+              {fmt(contrato.bounty || contrato.amount || 0)}
+            </div>
             <div className={styles.bountyLabel}>Recompensa USDC</div>
           </div>
         </div>
@@ -202,12 +221,13 @@ export default function DetalleContrato() {
 
         <div className={styles.grid}>
           <div className={styles.mainCol}>
-
             {/* Descripción */}
             <section className={styles.section}>
               <div className={styles.sectionTitle}>Descripción del Trabajo</div>
               <p className={styles.description}>
-                {contrato.description || contrato.descripcion_publica || 'Sin descripción.'}
+                {contrato.description ||
+                  contrato.descripcion_publica ||
+                  "Sin descripción."}
               </p>
             </section>
 
@@ -216,16 +236,20 @@ export default function DetalleContrato() {
               <div className={styles.sectionTitle}>Detalles del Contrato</div>
               <div className={styles.kvGrid}>
                 <span className={styles.k}>Referencia</span>
-                <span className={styles.v}>{contrato.no || id.slice(0, 8)}</span>
+                <span className={styles.v}>
+                  {contrato.no || id.slice(0, 8)}
+                </span>
                 <span className={styles.k}>Categoría</span>
-                <span className={styles.v}>{contrato.category || contrato.categoria}</span>
+                <span className={styles.v}>
+                  {contrato.category || contrato.categoria}
+                </span>
                 <span className={styles.k}>Participantes</span>
                 <span className={styles.v}>{contrato.participants ?? 0}</span>
                 <span className={styles.k}>Creador</span>
                 <span className={styles.v}>
                   {contrato.creator
-                    ? `${contrato.creator.slice(0,6)}…${contrato.creator.slice(-4)}`
-                    : '—'}
+                    ? `${contrato.creator.slice(0, 6)}…${contrato.creator.slice(-4)}`
+                    : "—"}
                 </span>
                 <span className={styles.k}>Vencimiento</span>
                 <span className={styles.v}>
@@ -233,7 +257,10 @@ export default function DetalleContrato() {
                 </span>
                 <span className={styles.k}>Umbral IA</span>
                 <span className={styles.v}>
-                  {contrato.requiredApprovals || contrato.umbral_validadores || 3} de 5 validadores
+                  {contrato.requiredApprovals ||
+                    contrato.umbral_validadores ||
+                    3}{" "}
+                  de 5 validadores
                 </span>
               </div>
             </section>
@@ -253,20 +280,22 @@ export default function DetalleContrato() {
 
             {/* Validadores */}
             <section className={styles.section}>
-              <div className={styles.sectionTitle}>Panel de Validadores GenLayer</div>
+              <div className={styles.sectionTitle}>
+                Panel de Validadores GenLayer
+              </div>
               <ValidadoresPanel
                 isValidating={isValidating}
                 result={
-                  contrato.status === 'closed' || contrato.status === 'cancelled'
+                  contrato.status === "closed" ||
+                  contrato.status === "cancelled"
                     ? {
                         approved: contrato.isApproved ?? false,
-                        summary:  contrato.validationSummary || 'Sin resumen.',
+                        summary: contrato.validationSummary || "Sin resumen.",
                       }
                     : validResult
                 }
                 requiredApprovals={
-                  contrato.requiredApprovals ||
-                  contrato.umbral_validadores || 3
+                  contrato.requiredApprovals || contrato.umbral_validadores || 3
                 }
               />
             </section>
@@ -282,7 +311,9 @@ export default function DetalleContrato() {
                   <p className={styles.deliveryCriteria}>
                     {contrato.description || contrato.descripcion_publica}
                   </p>
-                  <label className={styles.label}>Enlace de entrega / Hash / IPFS</label>
+                  <label className={styles.label}>
+                    Enlace de entrega / Hash / IPFS
+                  </label>
                   <textarea
                     className={styles.textarea}
                     rows={3}
@@ -295,25 +326,33 @@ export default function DetalleContrato() {
                     onClick={handleEntregar}
                     disabled={txLoading}
                   >
-                    {txLoading ? <><span className={styles.spinner} /> Enviando…</> : 'Enviar Entrega'}
+                    {txLoading ? (
+                      <>
+                        <span className={styles.spinner} /> Enviando…
+                      </>
+                    ) : (
+                      "Enviar Entrega"
+                    )}
                   </button>
                 </div>
               </section>
             )}
 
             {/* ── Validar — para el creador cuando hay entrega ── */}
-            {isCreator && contrato.status === 'pending' && (
+            {isCreator && contrato.status === "pending" && (
               <section className={styles.section}>
-                <div className={styles.sectionTitle}>Validar Entrega con IA</div>
+                <div className={styles.sectionTitle}>
+                  Validar Entrega con IA
+                </div>
                 <div className={styles.deliveryBox}>
                   <p className={styles.deliveryCriteria}>
-                    El freelancer entregó:{' '}
-                    
+                    El freelancer entregó:{" "}
+                    <a
                       href={contrato.deliveryUrl}
                       target="_blank"
                       rel="noreferrer"
                       className={styles.link}
-                    <a>
+                    >
                       {contrato.deliveryUrl}
                     </a>
                   </p>
@@ -322,20 +361,22 @@ export default function DetalleContrato() {
                     onClick={handleValidar}
                     disabled={txLoading || isValidating}
                   >
-                    {isValidating
-                      ? <><span className={styles.spinner} /> Validando con GenLayer…</>
-                      : 'Activar Jueces IA →'
-                    }
+                    {isValidating ? (
+                      <>
+                        <span className={styles.spinner} /> Validando con
+                        GenLayer…
+                      </>
+                    ) : (
+                      "Activar Jueces IA →"
+                    )}
                   </button>
                 </div>
               </section>
             )}
-
           </div>
 
           {/* Columna lateral */}
           <div className={styles.sideCol}>
-
             {/* Aumentar monto — creador */}
             {isCreator && isActive && (
               <div className={styles.sideCard}>
@@ -357,7 +398,7 @@ export default function DetalleContrato() {
                       value={montoExtra}
                       onChange={(e) => setMontoExtra(e.target.value)}
                     />
-                    <div style={{ display: 'flex', gap: 8, marginTop: 8 }}>
+                    <div style={{ display: "flex", gap: 8, marginTop: 8 }}>
                       <button
                         className={styles.btnSecondary}
                         onClick={() => setShowAumento(false)}
@@ -379,37 +420,37 @@ export default function DetalleContrato() {
 
             {/* Cancelar — creador, sin participantes */}
             {isCreator &&
-              contrato.status === 'open' &&
+              contrato.status === "open" &&
               (contrato.participants === 0 || !contrato.executor) && (
-              <div className={styles.sideCard}>
-                <div className={styles.sideCardTitle}>Cancelar Contrato</div>
-                <p className={styles.sideCardDesc}>
-                  Solo disponible si no hay freelancers activos.
-                  Los fondos te serán devueltos.
-                </p>
-                <button
-                  className={styles.btnCancelar}
-                  onClick={handleCancelar}
-                  disabled={txLoading}
-                >
-                  Cancelar y devolver fondos
-                </button>
-              </div>
-            )}
+                <div className={styles.sideCard}>
+                  <div className={styles.sideCardTitle}>Cancelar Contrato</div>
+                  <p className={styles.sideCardDesc}>
+                    Solo disponible si no hay freelancers activos. Los fondos te
+                    serán devueltos.
+                  </p>
+                  <button
+                    className={styles.btnCancelar}
+                    onClick={handleCancelar}
+                    disabled={txLoading}
+                  >
+                    Cancelar y devolver fondos
+                  </button>
+                </div>
+              )}
 
             {/* Link a blockchain */}
             <div className={styles.sideCard}>
               <div className={styles.sideCardTitle}>On-Chain</div>
-              
+
+              <a
                 href={`https://sepolia.etherscan.io/address/${id}`}
                 target="_blank"
                 rel="noreferrer"
                 className={styles.explorerLink}
-              <a>
+              >
                 Ver en Etherscan →
               </a>
             </div>
-
           </div>
         </div>
       </div>
