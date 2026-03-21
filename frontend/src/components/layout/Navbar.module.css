@@ -13,20 +13,19 @@
 }
 
 .logo {
-  font-family: "Montserrat", sans-serif;
-  font-size: 16px;
-  font-weight: 800;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.9);
+  display: flex;
+  align-items: center;
   text-decoration: none;
   transition: all 0.3s;
 }
 .logo:hover {
-  color: var(--accent-light);
+  opacity: 0.85;
+  transform: scale(1.03);
 }
-.logo span {
-  color: var(--accent-light);
+.logoImg {
+  height: 36px;
+  width: auto;
+  object-fit: contain;
 }
 
 .links {
