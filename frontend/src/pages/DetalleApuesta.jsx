@@ -485,7 +485,6 @@ export default function DetalleApuesta() {
                 </button>
               </div>
             )}
-
             {/* Resolver */}
             {canResolve && (
               <div className={styles.sideCard}>
@@ -509,24 +508,23 @@ export default function DetalleApuesta() {
                 </button>
               </div>
             )}
-
             {/* Cancelar */}
-            {isCreator && isActive && (
+            {isCreator && apuesta?.status === "resolving" && (
               <div className={styles.sideCard}>
                 <div className={styles.sideCardTitle}>Cancelar Mercado</div>
                 <p className={styles.sideCardDesc}>
-                  Solo disponible mientras el plazo no ha vencido.
+                  El oracle no respondió. Puedes cancelar después de 7 días
+                  desde que solicitaste la resolución.
                 </p>
                 <button
                   className={styles.btnCancelar}
                   onClick={handleCancelar}
                   disabled={txLoading}
                 >
-                  Cancelar Mercado
+                  Cancelar y devolver fondos
                 </button>
               </div>
             )}
-
             {/* On-chain */}
             <div className={styles.sideCard}>
               <div className={styles.sideCardTitle}>On-Chain</div>

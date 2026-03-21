@@ -8,12 +8,7 @@ import DetalleCivico from "../pages/DetalleCivico";
 import DetalleApuesta from "../pages/DetalleApuesta";
 import MiExpediente from "../pages/MiExpediente";
 import Perfil from "../pages/Perfil";
-
-const AccesoPrivado = () => (
-  <div style={{ padding: 40, fontFamily: "Cinzel,serif" }}>
-    Acceso Privado — Bloque 7
-  </div>
-);
+import AccesoPrivado from "../pages/AccesoPrivado";
 
 function Protected({ children }) {
   return (
@@ -85,7 +80,7 @@ export default function AppRoutes() {
               alignItems: "center",
               justifyContent: "center",
               minHeight: "100vh",
-              fontFamily: "Cinzel,serif",
+              fontFamily: "Cinzel, serif",
               fontSize: "11px",
               letterSpacing: "4px",
               color: "var(--ink3)",

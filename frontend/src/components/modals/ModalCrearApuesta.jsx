@@ -3,6 +3,7 @@ import { useWallet } from "../../context/WalletContext";
 import { useToast } from "../../context/ToastContext";
 import { useApp } from "../../context/AppContext";
 import { crearApuesta } from "../../services/apuestas";
+import CopyButton from "../ui/CopyButton";
 import styles from "./ModalCrearContrato.module.css";
 
 const CATEGORIAS = [
@@ -38,22 +39,19 @@ const RESOLUTION_TYPES = [
 const PASOS = ["El Mercado", "Resolución", "Confirmar"];
 
 export default function ModalCrearApuesta({ onClose }) {
-  const { address } = useWallet();
   const { toast } = useToast();
   const { refresh } = useApp();
 
   const [loading, setLoading] = useState(false);
   const [paso, setPaso] = useState(0);
+  const [linkGenerado, setLinkGenerado] = useState(null);
 
-  // Paso 0
   const [title, setTitle] = useState("");
   const [sideA, setSideA] = useState("");
   const [sideB, setSideB] = useState("");
   const [categoria, setCategoria] = useState(CATEGORIAS[0]);
   const [dias, setDias] = useState(7);
   const [isPrivate, setIsPrivate] = useState(false);
-
-  // Paso 1
   const [criteria, setCriteria] = useState("");
   const [resolutionType, setResolutionType] = useState(2);
 
@@ -92,6 +90,9 @@ export default function ModalCrearApuesta({ onClose }) {
   const handleSubmit = async () => {
     setLoading(true);
     try {
+      const linkToken = isPrivate
+        ? crypto.randomUUID().replace(/-/g, "")
+        : null;
       const { betAddress } = await crearApuesta({
         title,
         resolutionCriteria: criteria,
@@ -101,11 +102,16 @@ export default function ModalCrearApuesta({ onClose }) {
         resolutionType,
         categoria,
         isPrivate,
-        linkToken: isPrivate ? crypto.randomUUID() : null,
+        linkToken,
       });
-      toast.success(`Mercado publicado — ${betAddress.slice(0, 10)}…`);
-      await refresh();
-      onClose();
+
+      if (isPrivate && linkToken) {
+        setLinkGenerado(`${window.location.origin}/privado/${linkToken}`);
+      } else {
+        toast.success(`Mercado publicado — ${betAddress.slice(0, 10)}…`);
+        await refresh();
+        onClose();
+      }
     } catch (err) {
       toast.error(err.message || "Error al crear la apuesta");
     } finally {
@@ -128,7 +134,6 @@ export default function ModalCrearApuesta({ onClose }) {
           automáticamente.
         </div>
 
-        {/* Stepper */}
         <div className={styles.stepper}>
           {PASOS.map((p, i) => (
             <div key={i} className={styles.step}>
@@ -147,7 +152,6 @@ export default function ModalCrearApuesta({ onClose }) {
           ))}
         </div>
 
-        {/* PASO 0 */}
         {paso === 0 && (
           <div className={styles.body}>
             <div className={styles.group}>
@@ -156,7 +160,7 @@ export default function ModalCrearApuesta({ onClose }) {
                 className={styles.input}
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
-                placeholder="Ej: ¿Gana Ecuador el próximo partido clasificatorio?"
+                placeholder="Ej: ¿Gana Ecuador el próximo partido?"
               />
             </div>
             <div className={styles.row}>
@@ -195,7 +199,7 @@ export default function ModalCrearApuesta({ onClose }) {
                 </select>
               </div>
               <div className={styles.group}>
-                <label className={styles.label}>Plazo de votación</label>
+                <label className={styles.label}>Plazo</label>
                 <select
                   className={styles.select}
                   value={dias}
@@ -229,7 +233,6 @@ export default function ModalCrearApuesta({ onClose }) {
           </div>
         )}
 
-        {/* PASO 1 */}
         {paso === 1 && (
           <div className={styles.body}>
             <div className={styles.group}>
@@ -261,8 +264,8 @@ export default function ModalCrearApuesta({ onClose }) {
                 Criterios de Resolución para GenLayer
               </label>
               <div className={styles.hint}>
-                Describe exactamente qué debe buscar la IA para determinar el
-                resultado. Sé específico: fecha, fuente, condición.
+                Describe exactamente qué debe buscar la IA. Sé específico:
+                fecha, fuente, condición.
               </div>
               <textarea
                 className={styles.textarea}
@@ -270,17 +273,13 @@ export default function ModalCrearApuesta({ onClose }) {
                 value={criteria}
                 onChange={(e) => setCriteria(e.target.value)}
                 placeholder={
-                  "Ej: Busca el resultado final del partido Ecuador vs. Uruguay del clasificatorio\n" +
-                  "sudamericano al Mundial. Si Ecuador ganó (más goles al final del partido), la\n" +
-                  "respuesta es SÍ. Si empató o perdió, la respuesta es NO. Usa fuentes como\n" +
-                  "ESPN, FIFA o Marca."
+                  "Ej: Busca el resultado final del partido Ecuador vs. Uruguay.\nSi Ecuador ganó, la respuesta es SÍ. Si empató o perdió, NO.\nUsa fuentes como ESPN, FIFA o Marca."
                 }
               />
             </div>
           </div>
         )}
 
-        {/* PASO 2 */}
         {paso === 2 && (
           <div className={styles.body}>
             <div className={styles.confirmGrid}>
@@ -321,8 +320,7 @@ export default function ModalCrearApuesta({ onClose }) {
               </div>
             </div>
             <div className={styles.confirmNote}>
-              MetaMask pedirá una firma para crear el mercado on-chain. Los
-              participantes depositan USDC al apostar.
+              MetaMask pedirá una firma para crear el mercado on-chain.
             </div>
           </div>
         )}
@@ -364,6 +362,57 @@ export default function ModalCrearApuesta({ onClose }) {
             </button>
           )}
         </div>
+
+        {/* Pantalla de link generado */}
+        {linkGenerado && (
+          <div
+            style={{
+              position: "absolute",
+              inset: 0,
+              background: "var(--paper3)",
+              zIndex: 10,
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+              padding: 32,
+              gap: 16,
+              textAlign: "center",
+            }}
+          >
+            <div style={{ fontSize: 32, color: "var(--green)" }}>✓</div>
+            <div className={styles.title} style={{ fontSize: 14 }}>
+              Mercado creado
+            </div>
+            <p className={styles.sub}>
+              Comparte este link para que tu grupo pueda apostar:
+            </p>
+            <div
+              style={{
+                background: "var(--paper)",
+                border: "1px solid var(--bd-hi)",
+                padding: "10px 14px",
+                fontFamily: "Courier Prime, monospace",
+                fontSize: 11,
+                color: "var(--ink)",
+                wordBreak: "break-all",
+                width: "100%",
+              }}
+            >
+              {linkGenerado}
+            </div>
+            <CopyButton text={linkGenerado} label="Copiar link privado" />
+            <button
+              className={styles.btnCancel}
+              onClick={async () => {
+                await refresh();
+                onClose();
+              }}
+            >
+              Cerrar
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

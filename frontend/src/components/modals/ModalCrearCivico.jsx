@@ -3,6 +3,7 @@ import { useWallet } from "../../context/WalletContext";
 import { useToast } from "../../context/ToastContext";
 import { useApp } from "../../context/AppContext";
 import { crearPropuesta } from "../../services/civico";
+import CopyButton from "../ui/CopyButton";
 import styles from "./ModalCrearContrato.module.css";
 
 const CATEGORIAS = [
@@ -16,12 +17,15 @@ const CATEGORIAS = [
   "Otro",
 ];
 
+const PASOS = ["La Propuesta", "Fondos & Destino", "Confirmar"];
+
 export default function ModalCrearCivico({ onClose }) {
-  const { address } = useWallet();
   const { toast } = useToast();
   const { refresh } = useApp();
 
   const [loading, setLoading] = useState(false);
+  const [paso, setPaso] = useState(0);
+  const [linkGenerado, setLinkGenerado] = useState(null);
 
   const [entidad, setEntidad] = useState("");
   const [title, setTitle] = useState("");
@@ -31,7 +35,6 @@ export default function ModalCrearCivico({ onClose }) {
   const [funds, setFunds] = useState("");
   const [dias, setDias] = useState(14);
   const [isPrivate, setIsPrivate] = useState(false);
-  const [paso, setPaso] = useState(0);
 
   const endDate = Date.now() + dias * 86400000;
 
@@ -72,6 +75,9 @@ export default function ModalCrearCivico({ onClose }) {
   const handleSubmit = async () => {
     setLoading(true);
     try {
+      const linkToken = isPrivate
+        ? crypto.randomUUID().replace(/-/g, "")
+        : null;
       const { proposalAddress } = await crearPropuesta({
         title,
         description: descripcion,
@@ -81,19 +87,22 @@ export default function ModalCrearCivico({ onClose }) {
         isPrivate,
         entidad_nombre: entidad,
         categoria,
-        linkToken: isPrivate ? crypto.randomUUID() : null,
+        linkToken,
       });
-      toast.success(`Propuesta publicada — ${proposalAddress.slice(0, 10)}…`);
-      await refresh();
-      onClose();
+
+      if (isPrivate && linkToken) {
+        setLinkGenerado(`${window.location.origin}/privado/${linkToken}`);
+      } else {
+        toast.success(`Propuesta publicada — ${proposalAddress.slice(0, 10)}…`);
+        await refresh();
+        onClose();
+      }
     } catch (err) {
       toast.error(err.message || "Error al crear la propuesta");
     } finally {
       setLoading(false);
     }
   };
-
-  const PASOS = ["La Propuesta", "Fondos & Destino", "Confirmar"];
 
   return (
     <div
@@ -109,7 +118,6 @@ export default function ModalCrearCivico({ onClose }) {
           Deposita fondos que la comunidad decidirá liberar o retener.
         </div>
 
-        {/* Stepper */}
         <div className={styles.stepper}>
           {PASOS.map((p, i) => (
             <div key={i} className={styles.step}>
@@ -128,7 +136,6 @@ export default function ModalCrearCivico({ onClose }) {
           ))}
         </div>
 
-        {/* PASO 0 */}
         {paso === 0 && (
           <div className={styles.body}>
             <div className={styles.group}>
@@ -197,7 +204,6 @@ export default function ModalCrearCivico({ onClose }) {
           </div>
         )}
 
-        {/* PASO 1 */}
         {paso === 1 && (
           <div className={styles.body}>
             <div
@@ -259,7 +265,6 @@ export default function ModalCrearCivico({ onClose }) {
           </div>
         )}
 
-        {/* PASO 2 */}
         {paso === 2 && (
           <div className={styles.body}>
             <div className={styles.confirmGrid}>
@@ -345,6 +350,57 @@ export default function ModalCrearCivico({ onClose }) {
             </button>
           )}
         </div>
+
+        {/* Pantalla de link generado */}
+        {linkGenerado && (
+          <div
+            style={{
+              position: "absolute",
+              inset: 0,
+              background: "var(--paper3)",
+              zIndex: 10,
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+              padding: 32,
+              gap: 16,
+              textAlign: "center",
+            }}
+          >
+            <div style={{ fontSize: 32, color: "var(--green)" }}>✓</div>
+            <div className={styles.title} style={{ fontSize: 14 }}>
+              Propuesta creada
+            </div>
+            <p className={styles.sub}>
+              Comparte este link para que la comunidad pueda votar:
+            </p>
+            <div
+              style={{
+                background: "var(--paper)",
+                border: "1px solid var(--bd-hi)",
+                padding: "10px 14px",
+                fontFamily: "Courier Prime, monospace",
+                fontSize: 11,
+                color: "var(--ink)",
+                wordBreak: "break-all",
+                width: "100%",
+              }}
+            >
+              {linkGenerado}
+            </div>
+            <CopyButton text={linkGenerado} label="Copiar link privado" />
+            <button
+              className={styles.btnCancel}
+              onClick={async () => {
+                await refresh();
+                onClose();
+              }}
+            >
+              Cerrar
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

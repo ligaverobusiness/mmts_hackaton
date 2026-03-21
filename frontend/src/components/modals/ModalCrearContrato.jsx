@@ -4,6 +4,7 @@ import { useToast } from "../../context/ToastContext";
 import { useApp } from "../../context/AppContext";
 import { crearContrato } from "../../services/contratos";
 import styles from "./ModalCrearContrato.module.css";
+import CopyButton from "../ui/CopyButton";
 
 const CATEGORIAS = [
   "Diseño & Creatividad",
@@ -37,6 +38,7 @@ export default function ModalCrearContrato({ onClose }) {
   const [dias, setDias] = useState(7);
   const [isPrivate, setIsPrivate] = useState(false);
   const [executor, setExecutor] = useState("");
+  const [linkGenerado, setLinkGenerado] = useState(null);
 
   // Paso 2 — condiciones privadas para la IA
   const [condicionesIA, setCondicionesIA] = useState("");
@@ -74,9 +76,13 @@ export default function ModalCrearContrato({ onClose }) {
     setPaso((p) => p + 1);
   };
 
+  // Reemplaza handleSubmit
   const handleSubmit = async () => {
     setLoading(true);
     try {
+      const linkToken = isPrivate
+        ? crypto.randomUUID().replace(/-/g, "")
+        : null;
       const { workAddress } = await crearContrato({
         title,
         descriptionPublic: descripcion,
@@ -86,12 +92,17 @@ export default function ModalCrearContrato({ onClose }) {
         isPrivate,
         categoria,
         condicionesIA,
-        linkToken: isPrivate ? crypto.randomUUID() : null,
+        linkToken,
         executorAddress: executor || null,
       });
-      toast.success(`Contrato publicado — ${workAddress.slice(0, 10)}…`);
-      await refresh();
-      onClose();
+
+      if (isPrivate && linkToken) {
+        setLinkGenerado(`${window.location.origin}/privado/${linkToken}`);
+      } else {
+        toast.success(`Contrato publicado — ${workAddress.slice(0, 10)}…`);
+        await refresh();
+        onClose();
+      }
     } catch (err) {
       toast.error(err.message || "Error al crear el contrato");
     } finally {
@@ -378,6 +389,57 @@ export default function ModalCrearContrato({ onClose }) {
           )}
         </div>
       </div>
+      {/* Pantalla de link generado */}
+      {linkGenerado && (
+        <div
+          className={styles.overlay}
+          style={{
+            position: "absolute",
+            inset: 0,
+            background: "var(--paper3)",
+            zIndex: 10,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            padding: 32,
+            gap: 16,
+          }}
+        >
+          <div style={{ fontSize: 32, color: "var(--green)" }}>✓</div>
+          <div className={styles.title} style={{ fontSize: 14 }}>
+            Contrato creado
+          </div>
+          <p className={styles.sub}>
+            Tu contrato es privado. Comparte este link para que otros puedan
+            acceder:
+          </p>
+          <div
+            style={{
+              background: "var(--paper)",
+              border: "1px solid var(--bd-hi)",
+              padding: "10px 14px",
+              fontFamily: "Courier Prime, monospace",
+              fontSize: 11,
+              color: "var(--ink)",
+              wordBreak: "break-all",
+              width: "100%",
+            }}
+          >
+            {linkGenerado}
+          </div>
+          <CopyButton text={linkGenerado} label="Copiar link privado" />
+          <button
+            className={styles.btnCancel}
+            onClick={async () => {
+              await refresh();
+              onClose();
+            }}
+          >
+            Cerrar
+          </button>
+        </div>
+      )}
     </div>
   );
 }
