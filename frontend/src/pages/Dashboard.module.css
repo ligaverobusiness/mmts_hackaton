@@ -10,7 +10,7 @@
   background: var(--header-bg);
   padding: 14px 32px;
   position: relative;
-  overflow: hidden;
+  overflow: visible;
 }
 .header::before {
   content: "";
@@ -48,8 +48,8 @@
 .headerRight {
   position: absolute;
   right: 0;
-  top: 50%;
-  transform: translateY(-50%);
+  top: 14px;
+  z-index: 10;
 }
 
 .hCorner {
