@@ -13,10 +13,10 @@ export default function Landing() {
   useEffect(() => {
     if (isConnected && !transitioning) {
       setTransitioning(true);
-      // Wait for the shrink/move animation to finish before navigating
+      // Wait for the logo animation + wipe to finish before navigating
       setTimeout(() => {
         navigate("/dashboard", { replace: true });
-      }, 1400);
+      }, 1800);
     }
   }, [isConnected, navigate, transitioning]);
 
