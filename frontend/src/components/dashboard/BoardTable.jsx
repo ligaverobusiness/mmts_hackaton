@@ -4,6 +4,7 @@ import styles from "./BoardTable.module.css";
 
 export default function BoardTable({ onPublicar }) {
   const { entries, isLoading, error } = useApp();
+  console.log("entries en tabla:", entries.length, entries);
 
   if (isLoading) {
     return (
@@ -55,7 +56,7 @@ export default function BoardTable({ onPublicar }) {
         </thead>
         <tbody>
           {entries.map((e, i) => (
-            <BoardRow key={e.address} entry={e} index={i} />
+            <BoardRow key={e.address || i} entry={e} index={i} />
           ))}
         </tbody>
       </table>

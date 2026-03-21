@@ -11,10 +11,10 @@ const PORT = process.env.PORT || 4000;
 app.use(cors({ origin: process.env.FRONTEND_URL || "http://localhost:5173" }));
 app.use(express.json());
 
-// Rutas
 app.use("/api/usuarios", require("./routes/usuarios"));
 app.use("/api/contratos", require("./routes/contratos"));
 app.use("/api/apuestas", require("./routes/apuestas"));
+app.use("/api/civico", require("./routes/civico"));
 
 app.get("/health", (req, res) => res.json({ ok: true }));
 app.use(errorHandler);

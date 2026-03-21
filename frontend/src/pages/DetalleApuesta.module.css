@@ -1,0 +1,538 @@
+.page {
+  background: var(--paper);
+  min-height: calc(100vh - 52px);
+}
+.content {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 28px 28px 60px;
+}
+
+.loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 300px;
+  gap: 14px;
+  font-family: "Cinzel", serif;
+  font-size: 10px;
+  letter-spacing: 4px;
+  color: var(--ink3);
+  text-transform: uppercase;
+}
+.spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--bd-hi);
+  border-top-color: var(--gold);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  display: inline-block;
+}
+
+.back {
+  font-family: "Cinzel", serif;
+  font-size: 8px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  background: none;
+  border: none;
+  color: var(--ink3);
+  cursor: pointer;
+  margin-bottom: 10px;
+  display: block;
+  transition: color 0.15s;
+}
+.back:hover {
+  color: var(--ink);
+}
+
+.header {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 4px;
+}
+.headerLeft {
+  flex: 1;
+}
+.headerRight {
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.mainTitle {
+  font-family: "Playfair Display", serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--ink);
+  line-height: 1.2;
+  margin-bottom: 10px;
+}
+.badges {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.ttag {
+  font-family: "Courier Prime", monospace;
+  font-size: 8px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding: 2px 7px;
+  font-weight: 700;
+  border: 1px solid;
+  color: var(--plum);
+  background: var(--plum-l);
+  border-color: rgba(92, 30, 122, 0.2);
+}
+.priv {
+  font-family: "Courier Prime", monospace;
+  color: var(--amber);
+  font-size: 9px;
+}
+.pub {
+  font-family: "Courier Prime", monospace;
+  color: var(--green);
+  font-size: 9px;
+}
+.cat {
+  font-family: "Courier Prime", monospace;
+  font-size: 9px;
+  color: var(--ink3);
+  background: rgba(138, 122, 104, 0.1);
+  border: 1px solid var(--bd);
+  padding: 2px 7px;
+}
+
+.pool {
+  font-family: "Cinzel", serif;
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--plum);
+}
+.poolLabel {
+  font-family: "Courier Prime", monospace;
+  font-size: 9px;
+  color: var(--ink3);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-top: 3px;
+}
+
+.divider {
+  height: 1px;
+  background: linear-gradient(90deg, var(--plum), transparent);
+  margin: 16px 0 24px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 280px;
+  gap: 24px;
+  align-items: start;
+}
+.mainCol {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.section {
+}
+.sectionTitle {
+  font-family: "Cinzel", serif;
+  font-size: 8px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--ink3);
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--bd);
+  margin-bottom: 12px;
+}
+
+/* Pool */
+.poolTrack {
+  height: 10px;
+  background: var(--bd);
+  border-radius: 5px;
+  overflow: hidden;
+  display: flex;
+  margin-bottom: 16px;
+}
+.poolSegA {
+  height: 100%;
+  background: var(--green);
+  opacity: 0.7;
+  transition: width 0.5s;
+}
+.poolSegB {
+  height: 100%;
+  background: var(--red);
+  opacity: 0.7;
+  transition: width 0.5s;
+}
+
+.sides {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.side {
+  border: 1px solid var(--bd);
+  padding: 16px;
+  background: var(--paper);
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: center;
+}
+.side:hover {
+  background: var(--paper2);
+  border-color: var(--bd-hi);
+}
+.sideSelected {
+  border-color: var(--gold-b) !important;
+  background: var(--gold-bg) !important;
+  border-width: 2px;
+}
+
+.sideName {
+  font-family: "Cinzel", serif;
+  font-size: 12px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+.sidePool {
+  font-family: "Courier Prime", monospace;
+  font-size: 10px;
+  color: var(--ink3);
+  margin-bottom: 8px;
+}
+.sideMult {
+  font-family: "Cinzel", serif;
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 2px;
+}
+.hi {
+  color: var(--green);
+}
+.mi {
+  color: var(--amber);
+}
+.lo {
+  color: var(--red);
+}
+.sideMultLabel {
+  font-family: "Courier Prime", monospace;
+  font-size: 8px;
+  color: var(--ink3);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.sideSelectBtn {
+  font-family: "Cinzel", serif;
+  font-size: 8px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 6px 12px;
+  border: 1px solid var(--bd);
+  color: var(--ink3);
+  background: transparent;
+  transition: all 0.2s;
+  display: inline-block;
+}
+.sideSelectBtnActive {
+  border-color: var(--gold-b);
+  color: var(--gold);
+  background: var(--gold-bg);
+}
+
+.oddsNote {
+  font-size: 9px;
+  color: var(--ink3);
+  font-style: italic;
+  line-height: 1.6;
+}
+
+/* Detalles */
+.kvGrid {
+  display: grid;
+  grid-template-columns: 160px 1fr;
+  gap: 6px 14px;
+}
+.k {
+  font-size: 10px;
+  color: var(--ink3);
+  font-style: italic;
+}
+.v {
+  font-size: 12px;
+  color: var(--ink);
+  font-family: "Courier Prime", monospace;
+}
+
+/* Mis posiciones */
+.misPos {
+  border: 1px solid var(--bd);
+  background: var(--paper3);
+}
+.posRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--bd);
+}
+.posRow:last-child {
+  border-bottom: none;
+}
+.posLabel {
+  font-family: "Cinzel", serif;
+  font-size: 11px;
+  font-weight: 700;
+}
+.posAmt {
+  font-family: "Courier Prime", monospace;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--gold);
+}
+
+/* Zona de apuesta */
+.betZone {
+  border: 1px solid rgba(92, 30, 122, 0.25);
+  background: var(--plum-l);
+  padding: 20px;
+  border-left: 3px solid var(--plum);
+}
+.betZoneTitle {
+  font-family: "Cinzel", serif;
+  font-size: 10px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--plum);
+  margin-bottom: 12px;
+}
+.betSelected {
+  font-size: 11px;
+  color: var(--ink2);
+  margin-bottom: 12px;
+}
+.betHint {
+  font-size: 10px;
+  color: var(--plum);
+  font-style: italic;
+  margin-bottom: 12px;
+}
+.betLabel {
+  font-family: "Cinzel", serif;
+  font-size: 8px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--ink3);
+  margin-bottom: 6px;
+  display: block;
+}
+.betRow {
+  display: flex;
+  gap: 10px;
+  align-items: end;
+}
+.betInput {
+  width: 100%;
+  background: var(--paper);
+  border: 1px solid var(--bd-hi);
+  color: var(--ink);
+  font-family: "Courier Prime", monospace;
+  font-size: 13px;
+  padding: 9px 12px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.betInput:focus {
+  border-color: var(--plum);
+}
+.betPreview {
+  font-size: 11px;
+  color: var(--ink3);
+  margin-top: 10px;
+  font-style: italic;
+}
+
+/* Resultado */
+.resultBox {
+  padding: 20px;
+  border: 1px solid;
+  border-left: 3px solid;
+}
+.resultA {
+  border-color: rgba(26, 92, 52, 0.3);
+  background: var(--green-l);
+  border-left-color: var(--green);
+}
+.resultB {
+  border-color: rgba(139, 26, 42, 0.3);
+  background: var(--red-l);
+  border-left-color: var(--red);
+}
+.resultTitle {
+  font-family: "Cinzel", serif;
+  font-size: 12px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+.resultA .resultTitle {
+  color: var(--green);
+}
+.resultB .resultTitle {
+  color: var(--red);
+}
+.resultValue {
+  font-size: 12px;
+  color: var(--ink2);
+  font-style: italic;
+}
+
+/* Side col */
+.sideCol {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.sideCard {
+  border: 1px solid var(--bd);
+  padding: 18px;
+  background: var(--paper3);
+  border-top: 2px solid var(--gold-b);
+}
+.sideCardTitle {
+  font-family: "Cinzel", serif;
+  font-size: 8px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--ink);
+  margin-bottom: 10px;
+}
+.sideCardDesc {
+  font-size: 11px;
+  color: var(--ink3);
+  font-style: italic;
+  margin-bottom: 12px;
+  line-height: 1.5;
+}
+
+.explorerLink {
+  font-family: "Courier Prime", monospace;
+  font-size: 10px;
+  color: var(--gold);
+  border-bottom: 1px solid var(--gold-b);
+  display: inline-block;
+}
+.explorerLink:hover {
+  color: var(--gold-b);
+}
+
+.btnApostar {
+  font-family: "Cinzel", serif;
+  font-size: 9px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  padding: 10px 18px;
+  background: var(--plum);
+  color: var(--paper3);
+  border: none;
+  cursor: pointer;
+  transition: all 0.25s;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.btnApostar:hover:not(:disabled) {
+  background: #3a0f50;
+}
+.btnApostar:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btnReclamar {
+  width: 100%;
+  font-family: "Cinzel", serif;
+  font-size: 10px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  padding: 14px;
+  background: var(--green);
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+.btnReclamar:hover:not(:disabled) {
+  background: #0f4024;
+}
+.btnReclamar:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btnResolver {
+  width: 100%;
+  font-family: "Cinzel", serif;
+  font-size: 10px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  padding: 14px;
+  background: var(--navy);
+  color: var(--navy-l);
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+.btnResolver:hover:not(:disabled) {
+  background: #0f2040;
+}
+.btnResolver:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btnCancelar {
+  width: 100%;
+  font-family: "Cinzel", serif;
+  font-size: 8px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  padding: 9px;
+  background: var(--red-l);
+  color: var(--red);
+  border: 1px solid rgba(139, 26, 42, 0.3);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.btnCancelar:hover:not(:disabled) {
+  background: rgba(139, 26, 42, 0.15);
+}
+.btnCancelar:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
