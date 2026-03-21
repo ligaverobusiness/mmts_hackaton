@@ -16,7 +16,7 @@ export default function TopSidebar() {
   return (
     <aside className={styles.sidebar}>
       <div className={styles.header}>
-        <span>✦ &nbsp;Top 10 · Mayor Recompensa</span>
+        <span>✦ &nbsp;Top 10 de Contratos· Mayor Recompensa</span>
       </div>
 
       {top10.length === 0 && (

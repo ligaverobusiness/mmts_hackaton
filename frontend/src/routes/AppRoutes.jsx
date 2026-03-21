@@ -6,17 +6,9 @@ import Dashboard from "../pages/Dashboard";
 import DetalleContrato from "../pages/DetalleContrato";
 import DetalleCivico from "../pages/DetalleCivico";
 import DetalleApuesta from "../pages/DetalleApuesta";
+import MiExpediente from "../pages/MiExpediente";
+import Perfil from "../pages/Perfil";
 
-const MiExpediente = () => (
-  <div style={{ padding: 40, fontFamily: "Cinzel,serif" }}>
-    Mi Expediente — Bloque 6
-  </div>
-);
-const Perfil = () => (
-  <div style={{ padding: 40, fontFamily: "Cinzel,serif" }}>
-    Perfil — Bloque 6
-  </div>
-);
 const AccesoPrivado = () => (
   <div style={{ padding: 40, fontFamily: "Cinzel,serif" }}>
     Acceso Privado — Bloque 7
