@@ -4,17 +4,9 @@ import Layout from "../components/layout/Layout";
 import Landing from "../pages/Landing";
 import Dashboard from "../pages/Dashboard";
 import DetalleContrato from "../pages/DetalleContrato";
+import DetalleCivico from "../pages/DetalleCivico";
+import DetalleApuesta from "../pages/DetalleApuesta";
 
-const DetalleApuesta = () => (
-  <div style={{ padding: 40, fontFamily: "Cinzel,serif" }}>
-    Detalle Apuesta — Bloque 5
-  </div>
-);
-const DetalleCivico = () => (
-  <div style={{ padding: 40, fontFamily: "Cinzel,serif" }}>
-    Detalle Cívico — Bloque 4
-  </div>
-);
 const MiExpediente = () => (
   <div style={{ padding: 40, fontFamily: "Cinzel,serif" }}>
     Mi Expediente — Bloque 6

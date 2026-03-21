@@ -3,12 +3,22 @@ import TopSidebar from "../components/dashboard/TopSidebar";
 import FilterBar from "../components/dashboard/FilterBar";
 import BoardTable from "../components/dashboard/BoardTable";
 import ModalCrearContrato from "../components/modals/ModalCrearContrato";
+import ModalCrearCivico from "../components/modals/ModalCrearCivico";
+import ModalCrearApuesta from "../components/modals/ModalCrearApuesta";
+import { useApp } from "../context/AppContext";
 import styles from "./Dashboard.module.css";
 
 export default function Dashboard() {
-  const [showModalContrato, setShowModalContrato] = useState(false);
+  const { filters } = useApp();
+  const [showContrato, setShowContrato] = useState(false);
+  const [showCivico, setShowCivico] = useState(false);
+  const [showApuesta, setShowApuesta] = useState(false);
 
-  const handlePublicar = () => setShowModalContrato(true);
+  const handlePublicar = () => {
+    if (filters.type === "civic") setShowCivico(true);
+    else if (filters.type === "bet") setShowApuesta(true);
+    else setShowContrato(true);
+  };
 
   return (
     <div className={styles.page}>
@@ -37,8 +47,12 @@ export default function Dashboard() {
         </div>
       </div>
 
-      {showModalContrato && (
-        <ModalCrearContrato onClose={() => setShowModalContrato(false)} />
+      {showContrato && (
+        <ModalCrearContrato onClose={() => setShowContrato(false)} />
+      )}
+      {showCivico && <ModalCrearCivico onClose={() => setShowCivico(false)} />}
+      {showApuesta && (
+        <ModalCrearApuesta onClose={() => setShowApuesta(false)} />
       )}
     </div>
   );

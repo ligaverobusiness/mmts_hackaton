@@ -8,10 +8,10 @@ import {
 } from "react";
 import { getAllContratos } from "../services/contratos";
 import { getAllApuestas } from "../services/apuestas";
+import { getAllCivicos } from "../services/civico";
 
 const AppContext = createContext(null);
 
-// Normaliza entradas de contratos y apuestas a formato común del dashboard
 function normalize(item) {
   if (item.type === "bet") {
     return {
@@ -22,16 +22,12 @@ function normalize(item) {
   }
   return {
     ...item,
-    amount: item.bounty || 0,
+    amount: item.bounty || item.totalFunds || 0,
     category: item.category || item.categoria || "Sin categoría",
   };
 }
 
-const FILTERS = {
-  type: "all", // all | contract | bet | civic
-  category: "all", // all | Deportes | Tecnología...
-  visibility: "all", // all | public | private
-};
+const FILTERS = { type: "all", category: "all", visibility: "all" };
 
 function filterReducer(state, action) {
   switch (action.type) {
@@ -58,14 +54,20 @@ export function AppProvider({ children }) {
     setIsLoading(true);
     setError(null);
     try {
-      const [contratos, apuestas] = await Promise.all([
+      const [contratos, apuestas, civicos] = await Promise.all([
         getAllContratos(),
         getAllApuestas(),
+        getAllCivicos(),
       ]);
+      console.log("contratos:", contratos);
+      console.log("apuestas:", apuestas);
+      console.log("civicos:", civicos);
       const combined = [
         ...(Array.isArray(contratos) ? contratos : []),
         ...(Array.isArray(apuestas) ? apuestas : []),
+        ...(Array.isArray(civicos) ? civicos : []),
       ].map(normalize);
+      console.log("combined:", combined);
       setAllEntries(combined);
     } catch (err) {
       setError(err.message);
@@ -78,7 +80,6 @@ export function AppProvider({ children }) {
     fetchAll();
   }, [fetchAll]);
 
-  // Aplica filtros a las entradas
   const entries = allEntries.filter((e) => {
     if (filters.type !== "all" && e.type !== filters.type) return false;
     if (filters.category !== "all" && e.category !== filters.category)
@@ -88,13 +89,11 @@ export function AppProvider({ children }) {
     return true;
   });
 
-  // Top 10 contratos por bounty (excluyendo cancelados)
   const top10 = [...allEntries]
     .filter((e) => e.type === "contract" && e.status !== "cancelled")
     .sort((a, b) => b.amount - a.amount)
     .slice(0, 10);
 
-  // Categorías disponibles para el filtro
   const categories = [
     "all",
     ...new Set(allEntries.map((e) => e.category).filter(Boolean)),
