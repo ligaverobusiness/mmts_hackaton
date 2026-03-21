@@ -1,13 +1,25 @@
 const { mockContratos } = require("../utils/mockData");
 const ContratoMetadata = require("../models/ContratoMetadata");
-const { isDeployed } = require("../config/blockchain");
+const {
+  isDeployed,
+  getProvider,
+  CONTRACT_ADDRESSES,
+} = require("../config/blockchain");
+
+// ABI mínimo de WorkFactoryCOFI para leer datos
+const WORK_FACTORY_ABI = [
+  "function getAllWorks() view returns (address[])",
+  "function getOpenWorks() view returns (address[])",
+];
+const WORK_ABI = [
+  "function getInfo() view returns (address,string,string,string,uint256,uint256,uint256,uint8,bool,uint8,address,bool,string)",
+];
 
 // GET /api/contratos
-// Devuelve mock hasta que los contratos estén deployados (Bloque 3)
-const getAll = (req, res) => {
+const getAll = async (req, res) => {
   try {
     if (!isDeployed("WorkFactory")) {
-      // Bloque 2: devolver mock enriched con metadata de DB si existe
+      // Mock enriquecido con metadata de DB
       const metaAll = ContratoMetadata.getAll();
       const metaMap = {};
       metaAll.forEach((m) => {
@@ -26,55 +38,181 @@ const getAll = (req, res) => {
       });
       return res.json(enriched);
     }
-    // TODO Bloque 3: leer desde WorkFactoryCOFI on-chain
-    res.json([]);
+
+    // On-chain (Bloque 3 con contratos deployados)
+    const { ethers } = require("ethers");
+    const provider = getProvider();
+    const factory = new ethers.Contract(
+      CONTRACT_ADDRESSES.WorkFactory,
+      WORK_FACTORY_ABI,
+      provider,
+    );
+    const addresses = await factory.getAllWorks();
+
+    const works = await Promise.all(
+      addresses.map(async (addr) => {
+        try {
+          const work = new ethers.Contract(addr, WORK_ABI, provider);
+          const info = await work.getInfo();
+          const meta = ContratoMetadata.getByAddress(addr) || {};
+
+          return {
+            address: addr,
+            no: meta.no || addr.slice(0, 6).toUpperCase(),
+            type: "contract",
+            title: info[1],
+            description: info[2],
+            expiresAt: Number(info[5]) * 1000,
+            bounty: Number(ethers.formatUnits(info[6], 6)), // USDC 6 decimals
+            status: mapStatus(Number(info[9])),
+            isPrivate: info[8],
+            participants: info[10] !== ethers.ZeroAddress ? 1 : 0,
+            creator: info[0],
+            category: meta.categoria || "Sin categoría",
+            amount: Number(ethers.formatUnits(info[6], 6)),
+          };
+        } catch (_) {
+          return null;
+        }
+      }),
+    );
+
+    res.json(works.filter(Boolean));
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 };
 
 // GET /api/contratos/:address
-const getById = (req, res) => {
+const getById = async (req, res) => {
   try {
     const { address } = req.params;
-    const entry = mockContratos.find(
-      (c) => c.address.toLowerCase() === address.toLowerCase(),
-    );
-    if (!entry)
-      return res.status(404).json({ error: "Contrato no encontrado" });
 
+    if (!isDeployed("WorkFactory")) {
+      const entry = mockContratos.find(
+        (c) => c.address.toLowerCase() === address.toLowerCase(),
+      );
+      if (!entry)
+        return res.status(404).json({ error: "Contrato no encontrado" });
+      const meta = ContratoMetadata.getByAddress(address) || {};
+      return res.json({ ...entry, ...meta });
+    }
+
+    const { ethers } = require("ethers");
+    const provider = getProvider();
+    const work = new ethers.Contract(address, WORK_ABI, provider);
+    const info = await work.getInfo();
     const meta = ContratoMetadata.getByAddress(address) || {};
-    res.json({ ...entry, ...meta });
+
+    res.json({
+      address,
+      type: "contract",
+      title: info[1],
+      descriptionPublic: info[2],
+      deliveryUrl: info[3],
+      creationDate: Number(info[4]) * 1000,
+      expiresAt: Number(info[5]) * 1000,
+      bounty: Number(ethers.formatUnits(info[6], 6)),
+      amount: Number(ethers.formatUnits(info[6], 6)),
+      requiredApprovals: Number(info[7]),
+      isPrivate: info[8],
+      status: mapStatus(Number(info[9])),
+      executor: info[10],
+      isApproved: info[11],
+      validationSummary: info[12],
+      categoria: meta.categoria || "Sin categoría",
+      condiciones_ia: undefined, // nunca se expone aquí
+      link_token: meta.link_token || null,
+    });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+// POST /api/contratos
+// Guarda metadata — la transacción on-chain la hace el frontend directamente
+const create = (req, res) => {
+  try {
+    const {
+      address,
+      categoria,
+      descripcion_publica,
+      condiciones_ia,
+      umbral_validadores,
+      es_privado,
+      link_token,
+      executor_address,
+    } = req.body;
+
+    if (!address) return res.status(400).json({ error: "address requerido" });
+
+    ContratoMetadata.create({
+      address,
+      categoria,
+      descripcion_publica,
+      condiciones_ia,
+      umbral_validadores,
+      es_privado,
+      link_token,
+      executor_address,
+    });
+
+    res.status(201).json({ ok: true, address });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 };
 
 // GET /api/contratos/:address/condiciones
-// Solo el creador puede ver las condiciones privadas para la IA
-const getCondiciones = (req, res) => {
+// Solo el creador puede ver las condiciones IA
+const getCondiciones = async (req, res) => {
   try {
     const { address } = req.params;
     const { requester } = req.query;
 
-    const entry = mockContratos.find(
-      (c) => c.address.toLowerCase() === address.toLowerCase(),
-    );
-    if (!entry)
-      return res.status(404).json({ error: "Contrato no encontrado" });
+    if (!requester) {
+      return res.status(400).json({ error: "requester requerido" });
+    }
 
-    // En Bloque 2 con mock, permitimos ver si el requester coincide con creator
-    if (!requester || requester.toLowerCase() !== entry.creator.toLowerCase()) {
+    let creator = null;
+
+    if (isDeployed("WorkFactory")) {
+      const { ethers } = require("ethers");
+      const provider = getProvider();
+      const work = new ethers.Contract(address, WORK_ABI, provider);
+      const info = await work.getInfo();
+      creator = info[0].toLowerCase();
+    } else {
+      const entry = mockContratos.find(
+        (c) => c.address.toLowerCase() === address.toLowerCase(),
+      );
+      creator = entry?.creator?.toLowerCase();
+    }
+
+    if (!creator || requester.toLowerCase() !== creator) {
       return res
         .status(403)
         .json({ error: "Solo el creador puede ver las condiciones" });
     }
 
-    const meta = ContratoMetadata.getByAddress(address) || {};
-    res.json({ condiciones_ia: meta.condiciones_ia || null });
+    const meta = ContratoMetadata.getByAddress(address);
+    res.json({ condiciones_ia: meta?.condiciones_ia || null });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 };
 
-module.exports = { getAll, getById, getCondiciones };
+// Helper
+function mapStatus(statusCode) {
+  const map = {
+    0: "open",
+    1: "pending", // SUBMITTED
+    2: "resolving", // VALIDATING
+    3: "closed", // APPROVED
+    4: "cancelled", // REJECTED
+    5: "cancelled", // CANCELLED
+  };
+  return map[statusCode] || "open";
+}
+
+module.exports = { getAll, getById, create, getCondiciones };
