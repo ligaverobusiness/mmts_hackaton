@@ -74,7 +74,7 @@ export default function Landing() {
           className={`${styles.logoWrap} ${transitioning ? styles.logoTransition : ""}`}
         >
           <img
-            src="/minka_logo.png"
+            src="/miske_logo.png"
             alt="Minka"
             className={styles.logo}
           />
