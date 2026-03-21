@@ -34,7 +34,7 @@ export default function Landing() {
       {/* Video background */}
       <video
         className={styles.videoBg}
-        src="/1115482_Woman_Indoor_3840x2160.mov"
+        src="/1115482_Woman_Indoor_3840x2160.mp4"
         autoPlay
         muted
         loop
