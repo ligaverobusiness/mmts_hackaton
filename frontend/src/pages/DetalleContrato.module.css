@@ -1,0 +1,394 @@
+.page {
+  background: var(--paper);
+  min-height: calc(100vh - 52px);
+}
+.content {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 28px 28px 60px;
+}
+
+.loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 300px;
+  gap: 14px;
+  font-family: "Cinzel", serif;
+  font-size: 10px;
+  letter-spacing: 4px;
+  color: var(--ink3);
+  text-transform: uppercase;
+}
+.spinner {
+  width: 22px;
+  height: 22px;
+  border: 2px solid var(--bd-hi);
+  border-top-color: var(--gold);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  display: inline-block;
+}
+
+.back {
+  font-family: "Cinzel", serif;
+  font-size: 8px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  background: none;
+  border: none;
+  color: var(--ink3);
+  cursor: pointer;
+  margin-bottom: 10px;
+  display: block;
+  transition: color 0.15s;
+}
+.back:hover {
+  color: var(--ink);
+}
+
+.header {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 4px;
+}
+.headerLeft {
+  flex: 1;
+}
+.headerRight {
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.mainTitle {
+  font-family: "Playfair Display", serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--ink);
+  line-height: 1.2;
+  margin-bottom: 10px;
+}
+
+.badges {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.ttag {
+  font-family: "Courier Prime", monospace;
+  font-size: 8px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding: 2px 7px;
+  font-weight: 700;
+  border: 1px solid;
+  color: var(--navy);
+  background: var(--navy-l);
+  border-color: rgba(26, 50, 84, 0.2);
+}
+.priv {
+  font-family: "Courier Prime", monospace;
+  color: var(--amber);
+  font-size: 9px;
+}
+.pub {
+  font-family: "Courier Prime", monospace;
+  color: var(--green);
+  font-size: 9px;
+}
+.cat {
+  font-family: "Courier Prime", monospace;
+  font-size: 9px;
+  color: var(--ink3);
+  background: rgba(138, 122, 104, 0.1);
+  border: 1px solid var(--bd);
+  padding: 2px 7px;
+}
+
+.bounty {
+  font-family: "Cinzel", serif;
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--gold);
+}
+.bountyLabel {
+  font-family: "Courier Prime", monospace;
+  font-size: 9px;
+  color: var(--ink3);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-top: 3px;
+}
+
+.divider {
+  height: 1px;
+  background: linear-gradient(90deg, var(--gold-b), transparent);
+  margin: 16px 0 24px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 280px;
+  gap: 24px;
+  align-items: start;
+}
+
+.mainCol {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.section {
+}
+.sectionTitle {
+  font-family: "Cinzel", serif;
+  font-size: 8px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--ink3);
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--bd);
+  margin-bottom: 12px;
+}
+
+.description {
+  font-size: 13px;
+  color: var(--ink2);
+  line-height: 1.8;
+  font-style: italic;
+  border-left: 3px solid var(--gold-b);
+  padding-left: 14px;
+}
+
+.kvGrid {
+  display: grid;
+  grid-template-columns: 150px 1fr;
+  gap: 6px 14px;
+}
+.k {
+  font-size: 10px;
+  color: var(--ink3);
+  font-style: italic;
+}
+.v {
+  font-size: 12px;
+  color: var(--ink);
+  font-family: "Courier Prime", monospace;
+}
+
+.iaBox {
+  background: var(--amber-l);
+  border: 1px solid rgba(146, 82, 10, 0.2);
+  border-left: 3px solid var(--amber);
+  padding: 14px;
+  font-family: "Cinzel", serif;
+  font-size: 9px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--amber);
+}
+.iaConditions {
+  font-family: "Playfair Display", serif;
+  font-size: 12px;
+  color: var(--ink2);
+  font-style: italic;
+  text-transform: none;
+  letter-spacing: 0;
+  margin-top: 10px;
+  line-height: 1.7;
+}
+
+/* Zona de entrega */
+.deliveryBox {
+  border: 1px solid rgba(146, 82, 10, 0.3);
+  background: var(--amber-l);
+  padding: 20px;
+  border-left: 3px solid var(--amber);
+}
+.deliveryTitle {
+  font-family: "Cinzel", serif;
+  font-size: 10px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--amber);
+  margin-bottom: 10px;
+}
+.deliveryCriteria {
+  font-size: 12px;
+  color: var(--ink2);
+  line-height: 1.7;
+  font-style: italic;
+  margin-bottom: 14px;
+}
+.label {
+  font-family: "Cinzel", serif;
+  font-size: 8px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--ink3);
+  display: block;
+  margin-bottom: 6px;
+}
+.textarea,
+.input {
+  width: 100%;
+  background: var(--paper);
+  border: 1px solid var(--bd-hi);
+  color: var(--ink);
+  font-family: "Courier Prime", monospace;
+  font-size: 13px;
+  padding: 9px 12px;
+  outline: none;
+  resize: vertical;
+  transition: border-color 0.2s;
+}
+.textarea:focus,
+.input:focus {
+  border-color: var(--gold-b);
+}
+.textarea::placeholder {
+  color: var(--ink4);
+}
+
+.link {
+  color: var(--gold);
+  border-bottom: 1px solid var(--gold-b);
+}
+
+/* Side column */
+.sideCol {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.sideCard {
+  border: 1px solid var(--bd);
+  padding: 18px;
+  background: var(--paper3);
+  border-top: 2px solid var(--gold-b);
+}
+.sideCardTitle {
+  font-family: "Cinzel", serif;
+  font-size: 8px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--ink);
+  margin-bottom: 12px;
+}
+.sideCardDesc {
+  font-size: 11px;
+  color: var(--ink3);
+  font-style: italic;
+  margin-bottom: 12px;
+  line-height: 1.5;
+}
+
+.explorerLink {
+  font-family: "Courier Prime", monospace;
+  font-size: 10px;
+  color: var(--gold);
+  border-bottom: 1px solid var(--gold-b);
+  display: inline-block;
+}
+.explorerLink:hover {
+  color: var(--gold-b);
+}
+
+/* Buttons */
+.btnEntregar {
+  width: 100%;
+  margin-top: 12px;
+  font-family: "Cinzel", serif;
+  font-size: 10px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  padding: 14px;
+  background: var(--ink);
+  color: var(--gold-l);
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+.btnEntregar:hover:not(:disabled) {
+  background: #2e2010;
+  letter-spacing: 4px;
+}
+.btnEntregar:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btnValidar {
+  width: 100%;
+  margin-top: 12px;
+  font-family: "Cinzel", serif;
+  font-size: 10px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  padding: 14px;
+  background: var(--navy);
+  color: var(--navy-l);
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+.btnValidar:hover:not(:disabled) {
+  background: #0f2040;
+}
+.btnValidar:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btnSecondary {
+  font-family: "Cinzel", serif;
+  font-size: 8px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  padding: 9px 14px;
+  background: var(--paper2);
+  color: var(--ink);
+  border: 1px solid var(--bd-hi);
+  cursor: pointer;
+  transition: all 0.2s;
+  width: 100%;
+}
+.btnSecondary:hover {
+  background: var(--gold-bg);
+  border-color: var(--gold-b);
+}
+
+.btnCancelar {
+  font-family: "Cinzel", serif;
+  font-size: 8px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  padding: 9px 14px;
+  background: var(--red-l);
+  color: var(--red);
+  border: 1px solid rgba(139, 26, 42, 0.3);
+  cursor: pointer;
+  transition: all 0.2s;
+  width: 100%;
+}
+.btnCancelar:hover:not(:disabled) {
+  background: rgba(139, 26, 42, 0.15);
+}
+.btnCancelar:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}

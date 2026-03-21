@@ -3,13 +3,8 @@ import WalletGuard from "../components/wallet/WalletGuard";
 import Layout from "../components/layout/Layout";
 import Landing from "../pages/Landing";
 import Dashboard from "../pages/Dashboard";
+import DetalleContrato from "../pages/DetalleContrato";
 
-// Placeholders — se reemplazan en bloques siguientes
-const DetalleContrato = () => (
-  <div style={{ padding: 40, fontFamily: "Cinzel,serif" }}>
-    Detalle Contrato — Bloque 3
-  </div>
-);
 const DetalleApuesta = () => (
   <div style={{ padding: 40, fontFamily: "Cinzel,serif" }}>
     Detalle Apuesta — Bloque 5
@@ -49,7 +44,6 @@ export default function AppRoutes() {
     <Routes>
       <Route path="/" element={<Landing />} />
       <Route path="/privado/:token" element={<AccesoPrivado />} />
-
       <Route
         path="/dashboard"
         element={
@@ -98,7 +92,6 @@ export default function AppRoutes() {
           </Protected>
         }
       />
-
       <Route
         path="*"
         element={
