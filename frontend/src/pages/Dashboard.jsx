@@ -29,12 +29,12 @@ export default function Dashboard() {
         <div className={styles.hCorner + " " + styles.tl} />
         <div className={styles.hCorner + " " + styles.tr} />
         <div className={styles.headerContent}>
-          <Link to="/dashboard" className={styles.headerLogo}>
-            <img src="/minka_logo.png" alt="Minka" className={styles.headerLogoImg} />
-          </Link>
           <div className={styles.eyebrow}>
             Plataforma descentralizada · Contratos &amp; Mercados
           </div>
+          <Link to="/dashboard" className={styles.headerLogo}>
+            <img src="/minka_logo.png" alt="Minka" className={styles.headerLogoImg} />
+          </Link>
           <div className={styles.ornament}>
             <div className={styles.line} />
             <div className={styles.diamond} />
