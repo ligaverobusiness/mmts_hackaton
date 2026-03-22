@@ -35,7 +35,8 @@ Abrir `http://localhost:5173` en el navegador.
 
 ## Variables de entorno
 
-Los archivos `.env` ya están configurados en el repositorio con las addresses de los contratos desplegados. No es necesario modificar nada para correr el proyecto y aquí se podrán encontrar las direcciones de los contratos desplegados en Testnet Bradbury.
+Los archivos `.env` ya están configurados en el repositorio con las addresses de los contratos desplegados. No es necesario modificar nada para correr el proyecto y aquí se podrán encontrar las direcciones de los contratos desplegados en Testnet Bradbury. Todos los demás contratos que se creen se pueden visualizar con el link "On-Chain
+Ver en Etherscan →"
 
 ### `backend/.env`
 
