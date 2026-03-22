@@ -18,6 +18,7 @@
     "ethers": "^6.16.0",
     "express": "^5.2.1",
     "form-data": "^4.0.5",
+    "genlayer-js": "^0.23.0",
     "node-fetch": "^3.3.2",
     "uuid": "^13.0.0"
   },

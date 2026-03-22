@@ -124,21 +124,25 @@ export default function DetalleContrato() {
     setTxLoading(true);
     try {
       await solicitarValidacion(id);
-      setIsValidating(true);
       toast.info("Validación iniciada — Los jueces IA están evaluando…");
 
       const updated = await getContratoById(id);
       setContrato(updated);
 
-      // Iniciar polling con relay automático
       const genlayerAddr = updated.genlayer_address || VALIDATOR_ADDRESS;
-      if (genlayerAddr) {
+      const urlEntrega = updated.deliveryUrl || contrato.deliveryUrl;
+
+      if (genlayerAddr && urlEntrega) {
+        // ✅ Paso que faltaba: escribir en el contrato GenLayer
+        await validateDelivery(genlayerAddr, urlEntrega, address); // ✅ address del useWallet()
+
+        setIsValidating(true);
+
         const stopPoll = pollValidation(genlayerAddr, id, (result) => {
           if (result?.status !== "pending") {
             setIsValidating(false);
             setValidResult(result);
             stopPoll();
-            // Recargar contrato para ver el nuevo status on-chain
             setTimeout(async () => {
               const final = await getContratoById(id);
               setContrato(final);
@@ -147,7 +151,8 @@ export default function DetalleContrato() {
         });
       }
     } catch (err) {
-      toast.error(parsearError(err));
+      toast.error(err.message || "Error al iniciar validación");
+      setIsValidating(false); // ✅ reset si falla validateDelivery
     } finally {
       setTxLoading(false);
     }

@@ -8,18 +8,23 @@ const ORACLE_ADDRESS = import.meta.env.VITE_GENLAYER_BET_ORACLE || null;
 
 let client = null;
 
-function getClient() {
-  if (!client) client = createClient({ chain: testnetAsimov });
+function getClient(account = null) {
+  if (!client || account) {
+    client = createClient({
+      chain: testnetAsimov,
+      ...(account && { account }),
+    });
+  }
   return client;
 }
 
 // ── Contratos de trabajo ──────────────────────────────
 
-export async function validateDelivery(validatorAddress, deliveryUrl) {
+export async function validateDelivery(validatorAddress, deliveryUrl, account) {
   const addr = validatorAddress || VALIDATOR_ADDRESS;
   if (!addr) throw new Error("No hay contrato GenLayer configurado");
 
-  const c = getClient();
+  const c = getClient(account); // ✅ pasa el account
   const hash = await c.writeContract({
     address: addr,
     functionName: "validate_delivery",
