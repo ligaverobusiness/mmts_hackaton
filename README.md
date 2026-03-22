@@ -35,8 +35,9 @@ Abrir `http://localhost:5173` en el navegador.
 
 ## Variables de entorno
 
-Los archivos `.env` ya están configurados en el repositorio con las addresses de los contratos desplegados. No es necesario modificar nada para correr el proyecto y aquí se podrán encontrar las direcciones de los contratos desplegados en Testnet Bradbury. Todos los demás contratos que se creen se pueden visualizar con el link "On-Chain
-Ver en Etherscan →"
+Los archivos .env ya se encuentran configurados dentro del repositorio e incluyen las direcciones de los contratos previamente desplegados. Por lo tanto, no es necesario realizar modificaciones adicionales para ejecutar el proyecto. En estos archivos se pueden consultar las direcciones correspondientes a los contratos desplegados en la Testnet Bradbury.
+
+Adicionalmente, cualquier nuevo contrato que se genere podrá visualizarse mediante el enlace "On-Chain", disponible dentro de la aplicación.
 
 ### `backend/.env`
 
@@ -66,10 +67,7 @@ VITE_GENLAYER_BET_ORACLE=...
 
 ### Consideraciones para la Web (Prototipo)
 
--Recomendamos que en los precios establecer una cantidad mínima como 0.01$
--MetaMask tarda algunos segundos en completar los contratos, apuestas y cívicos; en esta web
-se piden dos confirmaciones así que no piensen que la página se quedó congelada por favor! ;D
--La página solo funciona si MetaMask está conectado a una ETH de Sepolia
--Sabemos que es un error de ciberseguridad grande, pero que los .env sean públicos está hecho
-a propósito para que la clonación del repositorio sea directa y sencilla (las direcciones, contratos
-y wallets son destinadas únicamente a este proyecto, no son personales)
+Se recomienda establecer un precio entre $0.01 - $0.02 en las operaciones para su facilidad.
+Las transacciones en MetaMask pueden tardar algunos segundos en completarse (contratos, apuestas y procesos cívicos). Además, la aplicación solicita dos confirmaciones, por lo que es normal percibir una breve espera; esto no indica que la página esté congelada.
+La plataforma funciona únicamente cuando MetaMask está conectado a la red Sepolia (Ethereum).
+Se reconoce que la exposición pública de los archivos .env representa un riesgo en términos de ciberseguridad; sin embargo, esto se ha realizado intencionalmente para facilitar la clonación y ejecución del repositorio. Cabe destacar que las direcciones, contratos y wallets incluidos son exclusivos de este proyecto y no corresponden a información personal.
