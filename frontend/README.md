@@ -1,3 +1,7 @@
+## Integrantes
+
+Mayerli Quintuña, María de los Ángeles Contreras, Tamara Serpa, Sebastián Tapia
+
 ## Requisitos previos
 
 - Node.js v18 o superior
