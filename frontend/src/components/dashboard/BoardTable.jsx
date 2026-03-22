@@ -29,7 +29,7 @@ export default function BoardTable({ onPublicar }) {
       <div className={styles.empty}>
         <div className={styles.emptyIcon}>+</div>
         <p className={styles.emptyTitle}>Sin registros</p>
-        <p className={styles.emptySub}>El tablero est\u00e1 vac\u00edo.</p>
+        <p className={styles.emptySub}>El tablero esta vacio.</p>
         <button className={styles.emptyBtn} onClick={onPublicar}>
           + Publicar la primera orden
         </button>
