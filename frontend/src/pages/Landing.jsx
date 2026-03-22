@@ -30,7 +30,9 @@ export default function Landing() {
   };
 
   return (
-    <div className={`${styles.page} ${transitioning ? styles.transitioning : ""}`}>
+    <div
+      className={`${styles.page} ${transitioning ? styles.transitioning : ""}`}
+    >
       {/* Video background */}
       <video
         className={styles.videoBg}
@@ -64,7 +66,9 @@ export default function Landing() {
       {/* Main content */}
       <div className={styles.content}>
         {/* Eyebrow */}
-        <p className={`${styles.eyebrow} ${transitioning ? styles.fadeOutUp : ""}`}>
+        <p
+          className={`${styles.eyebrow} ${transitioning ? styles.fadeOutUp : ""}`}
+        >
           Plataforma descentralizada · Contratos &amp; Mercados
         </p>
 
@@ -73,20 +77,20 @@ export default function Landing() {
           ref={logoRef}
           className={`${styles.logoWrap} ${transitioning ? styles.logoTransition : ""}`}
         >
-          <img
-            src="/minka_logo.png"
-            alt="Minka"
-            className={styles.logo}
-          />
+          <img src="/miske_logo.png" alt="Miske" className={styles.logo} />
         </div>
 
         {/* Subtitle */}
-        <p className={`${styles.subtitle} ${transitioning ? styles.fadeOutUp : ""}`}>
+        <p
+          className={`${styles.subtitle} ${transitioning ? styles.fadeOutUp : ""}`}
+        >
           Contratos · Apuestas · Gobernanza
         </p>
 
         {/* CTA */}
-        <div className={`${styles.cta} ${transitioning ? styles.fadeOutDown : ""}`}>
+        <div
+          className={`${styles.cta} ${transitioning ? styles.fadeOutDown : ""}`}
+        >
           <button
             className={styles.btnConnect}
             onClick={handleConnect}
@@ -105,7 +109,14 @@ export default function Landing() {
             ) : (
               <>
                 <span className={styles.walletIcon}>
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <svg
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                  >
                     <rect x="2" y="6" width="20" height="14" rx="2" />
                     <path d="M2 10h20" />
                     <circle cx="18" cy="14" r="1" />
@@ -119,7 +130,12 @@ export default function Landing() {
           {!window.ethereum?.isMetaMask && (
             <p className={styles.noMetaMask}>
               No tienes MetaMask instalado.{" "}
-              <a href="https://metamask.io" target="_blank" rel="noreferrer" className={styles.link}>
+              <a
+                href="https://metamask.io"
+                target="_blank"
+                rel="noreferrer"
+                className={styles.link}
+              >
                 Instálalo aquí →
               </a>
             </p>
@@ -127,7 +143,9 @@ export default function Landing() {
         </div>
 
         {/* Footer */}
-        <p className={`${styles.footer} ${transitioning ? styles.fadeOutDown : ""}`}>
+        <p
+          className={`${styles.footer} ${transitioning ? styles.fadeOutDown : ""}`}
+        >
           Powered by GenLayer · Testnet Bradbury
         </p>
       </div>

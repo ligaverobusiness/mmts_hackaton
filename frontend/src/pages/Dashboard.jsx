@@ -33,7 +33,11 @@ export default function Dashboard() {
             Plataforma descentralizada · Contratos &amp; Mercados
           </div>
           <Link to="/dashboard" className={styles.headerLogo}>
-            <img src="/minka_logo.png" alt="Minka" className={styles.headerLogoImg} />
+            <img
+              src="/miske_logo.png"
+              alt="Minka"
+              className={styles.headerLogoImg}
+            />
           </Link>
           <p className={styles.sub}>Contratos · Apuestas · Gobernanza</p>
           <div className={styles.headerRight}>

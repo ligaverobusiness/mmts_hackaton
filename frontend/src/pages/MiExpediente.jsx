@@ -93,8 +93,8 @@ export default function MiExpediente() {
           </div>
           <Link to="/dashboard" className={styles.headerLogo}>
             <img
-              src="/minka_logo.png"
-              alt="Minka"
+              src="/miske_logo.png"
+              alt="Miske"
               className={styles.headerLogoImg}
             />
           </Link>
