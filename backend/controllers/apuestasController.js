@@ -12,6 +12,57 @@ const BET_ABI = [
   "function status() view returns (uint8)",
 ];
 
+async function countParticipants(betAddress, provider) {
+  try {
+    const { ethers } = require("ethers");
+    const iface = new ethers.Interface([
+      "event BetPlacedOnA(address indexed bettor, uint256 amount)",
+      "event BetPlacedOnB(address indexed bettor, uint256 amount)",
+    ]);
+    const [logsA, logsB] = await Promise.all([
+      provider
+        .getLogs({
+          address: betAddress,
+          topics: [iface.getEvent("BetPlacedOnA").topicHash],
+          fromBlock: "earliest",
+          toBlock: "latest",
+        })
+        .catch(() => []),
+      provider
+        .getLogs({
+          address: betAddress,
+          topics: [iface.getEvent("BetPlacedOnB").topicHash],
+          fromBlock: "earliest",
+          toBlock: "latest",
+        })
+        .catch(() => []),
+    ]);
+    const unique = new Set([
+      ...logsA
+        .map((l) => {
+          try {
+            return iface.parseLog(l).args.bettor.toLowerCase();
+          } catch (_) {
+            return null;
+          }
+        })
+        .filter(Boolean),
+      ...logsB
+        .map((l) => {
+          try {
+            return iface.parseLog(l).args.bettor.toLowerCase();
+          } catch (_) {
+            return null;
+          }
+        })
+        .filter(Boolean),
+    ]);
+    return unique.size;
+  } catch (_) {
+    return 0;
+  }
+}
+
 const getAll = async (req, res) => {
   try {
     if (!isDeployed("BetFactory")) {
@@ -49,6 +100,7 @@ const getAll = async (req, res) => {
           const meta = ApuestaMetadata.getByAddress(addr) || {};
           const totalA = Number(ethers.formatUnits(info[9], 6));
           const totalB = Number(ethers.formatUnits(info[10], 6));
+          const participants = await countParticipants(addr, provider);
           return {
             address: addr,
             type: "bet",
@@ -65,6 +117,7 @@ const getAll = async (req, res) => {
             totalSideB: totalB,
             totalPool: totalA + totalB,
             amount: totalA + totalB,
+            participants,
             winnerValue: info[12],
             status: mapBetStatus(Number(await bet.status())),
             isPrivate: meta.es_privada === 1,
@@ -99,6 +152,7 @@ const getAll = async (req, res) => {
 const getById = async (req, res) => {
   try {
     const { address } = req.params;
+
     if (!isDeployed("BetFactory")) {
       const entry = mockApuestas.find(
         (a) => a.address.toLowerCase() === address.toLowerCase(),
@@ -108,6 +162,7 @@ const getById = async (req, res) => {
       const meta = ApuestaMetadata.getByAddress(address) || {};
       return res.json({ ...entry, ...meta });
     }
+
     const { ethers } = require("ethers");
     const provider = getProvider();
     const bet = new ethers.Contract(address, BET_ABI, provider);
@@ -115,6 +170,8 @@ const getById = async (req, res) => {
     const meta = ApuestaMetadata.getByAddress(address) || {};
     const totalA = Number(ethers.formatUnits(info[9], 6));
     const totalB = Number(ethers.formatUnits(info[10], 6));
+    const participants = await countParticipants(address, provider);
+
     res.json({
       address,
       type: "bet",
@@ -130,6 +187,7 @@ const getById = async (req, res) => {
       totalSideB: totalB,
       totalPool: totalA + totalB,
       amount: totalA + totalB,
+      participants,
       winnerValue: info[12],
       status: mapBetStatus(Number(await bet.status())),
       isPrivate: meta.es_privada === 1,
