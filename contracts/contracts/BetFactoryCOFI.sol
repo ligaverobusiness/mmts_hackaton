@@ -102,7 +102,6 @@ contract BetFactoryCOFI is Ownable {
         uint8 resolutionType,
         bytes memory resolutionData
     ) external returns (address) {
-        require(canCreateBet(msg.sender), "Not authorized to create bets");
         require(resolutionType <= 2, "Invalid resolution type");
 
         BetCOFI bet = new BetCOFI(msg.sender, title, resolutionCriteria, sideAName, sideBName, endDate, usdcToken, address(this), BetCOFI.ResolutionType(resolutionType), resolutionData);

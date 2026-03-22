@@ -44,7 +44,7 @@
       ]
     },
     "C:\\Users\\Usuario\\Desktop\\proyecto_hackaton\\contracts\\contracts\\interfaces\\IBetFactoryCOFI.sol": {
-      "lastModificationDate": 1774063082159,
+      "lastModificationDate": 1774121599642,
       "contentHash": "080e33f6d5d00db8c923de61a1161457",
       "sourceName": "contracts/interfaces/IBetFactoryCOFI.sol",
       "solcConfig": {
@@ -270,8 +270,8 @@
       ]
     },
     "C:\\Users\\Usuario\\Desktop\\proyecto_hackaton\\contracts\\contracts\\BetFactoryCOFI.sol": {
-      "lastModificationDate": 1774121599633,
-      "contentHash": "106580c62a3eb33365056095fecec3eb",
+      "lastModificationDate": 1774142593318,
+      "contentHash": "e19d4be6ebc1e267ce5b2ae554036876",
       "sourceName": "contracts/BetFactoryCOFI.sol",
       "solcConfig": {
         "version": "0.8.22",
@@ -394,7 +394,7 @@
       ]
     },
     "C:\\Users\\Usuario\\Desktop\\proyecto_hackaton\\contracts\\contracts\\interfaces\\IWorkFactoryCOFI.sol": {
-      "lastModificationDate": 1774058996102,
+      "lastModificationDate": 1774121599645,
       "contentHash": "efdf16e7946834c71cbe037ad7d4de50",
       "sourceName": "contracts/interfaces/IWorkFactoryCOFI.sol",
       "solcConfig": {

@@ -3,7 +3,7 @@ const { ethers } = require("hardhat");
 async function main() {
   const [deployer] = await ethers.getSigners();
 
-  const BET_FACTORY_ADDRESS = "0x461bD2Fa75Eb376cf39988e4bD79fB944D135Ef8";
+  const BET_FACTORY_ADDRESS = "0x973FD57eAa52DB63533cA2B88217fDa675D7F901";
 
   const factory = await ethers.getContractAt(
     "BetFactoryCOFI",

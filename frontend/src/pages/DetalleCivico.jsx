@@ -4,6 +4,8 @@ import { useWallet } from "../context/WalletContext";
 import { useToast } from "../context/ToastContext";
 import { useApp } from "../context/AppContext";
 import Navbar from "../components/layout/Navbar";
+import { parsearError } from "../utils/errores";
+
 import {
   getCivicoById,
   votarPropuesta,
@@ -47,7 +49,7 @@ export default function DetalleCivico() {
           } catch (_) {}
         }
       } catch (err) {
-        toast.error(err.message);
+        toast.error(parsearError(err));
       } finally {
         setLoading(false);
       }
@@ -81,7 +83,7 @@ export default function DetalleCivico() {
       const updated = await getCivicoById(id);
       setPropuesta(updated);
     } catch (err) {
-      toast.error(err.message);
+      toast.error(parsearError(err));
     } finally {
       setTxLoading(false);
     }
@@ -96,7 +98,7 @@ export default function DetalleCivico() {
       const updated = await getCivicoById(id);
       setPropuesta(updated);
     } catch (err) {
-      toast.error(err.message);
+      toast.error(parsearError(err));
     } finally {
       setTxLoading(false);
     }
@@ -116,7 +118,7 @@ export default function DetalleCivico() {
       await refresh();
       navigate("/dashboard");
     } catch (err) {
-      toast.error(err.message);
+      toast.error(parsearError(err));
     } finally {
       setTxLoading(false);
     }

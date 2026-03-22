@@ -4,6 +4,8 @@ import { useWallet } from "../context/WalletContext";
 import { useToast } from "../context/ToastContext";
 import { useApp } from "../context/AppContext";
 import Navbar from "../components/layout/Navbar";
+import { parsearError } from "../utils/errores";
+
 import {
   getApuestaById,
   apostar,
@@ -71,7 +73,7 @@ export default function DetalleApuesta() {
           } catch (_) {}
         }
       } catch (err) {
-        toast.error(err.message);
+        toast.error(parsearError(err));
       } finally {
         setLoading(false);
       }
@@ -118,7 +120,7 @@ export default function DetalleApuesta() {
       setApuesta(updated);
       setStakeAmount("");
     } catch (err) {
-      toast.error(err.message);
+      toast.error(parsearError(err));
     } finally {
       setTxLoading(false);
     }
@@ -158,7 +160,7 @@ export default function DetalleApuesta() {
         });
       }
     } catch (err) {
-      toast.error(err.message);
+      toast.error(parsearError(err));
     } finally {
       setTxLoading(false);
     }
@@ -171,7 +173,7 @@ export default function DetalleApuesta() {
       toast.success("Ganancias reclamadas — USDC enviado a tu wallet");
       await refresh();
     } catch (err) {
-      toast.error(err.message);
+      toast.error(parsearError(err));
     } finally {
       setTxLoading(false);
     }
@@ -186,7 +188,7 @@ export default function DetalleApuesta() {
       await refresh();
       navigate("/dashboard");
     } catch (err) {
-      toast.error(err.message);
+      toast.error(parsearError(err));
     } finally {
       setTxLoading(false);
     }

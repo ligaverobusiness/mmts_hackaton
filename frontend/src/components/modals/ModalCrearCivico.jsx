@@ -5,6 +5,7 @@ import { useApp } from "../../context/AppContext";
 import { crearPropuesta } from "../../services/civico";
 import CopyButton from "../ui/CopyButton";
 import styles from "./ModalCrearContrato.module.css";
+import { parsearError } from "../../utils/errores";
 
 const CATEGORIAS = [
   "Infraestructura",
@@ -98,7 +99,7 @@ export default function ModalCrearCivico({ onClose }) {
         onClose();
       }
     } catch (err) {
-      toast.error(err.message || "Error al crear la propuesta");
+      toast.error(parsearError(err));
     } finally {
       setLoading(false);
     }

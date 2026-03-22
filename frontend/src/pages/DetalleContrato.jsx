@@ -4,6 +4,8 @@ import { useWallet } from "../context/WalletContext";
 import { useToast } from "../context/ToastContext";
 import { useApp } from "../context/AppContext";
 import Navbar from "../components/layout/Navbar";
+import { parsearError } from "../utils/errores";
+
 import {
   getContratoById,
   getCondicionesIA,
@@ -83,7 +85,7 @@ export default function DetalleContrato() {
           );
         }
       } catch (err) {
-        toast.error(err.message);
+        toast.error(parsearError(err));
       } finally {
         setLoading(false);
       }
@@ -111,7 +113,7 @@ export default function DetalleContrato() {
       const updated = await getContratoById(id);
       setContrato(updated);
     } catch (err) {
-      toast.error(err.message);
+      toast.error(parsearError(err));
     } finally {
       setTxLoading(false);
     }
@@ -145,7 +147,7 @@ export default function DetalleContrato() {
         });
       }
     } catch (err) {
-      toast.error(err.message);
+      toast.error(parsearError(err));
     } finally {
       setTxLoading(false);
     }
@@ -166,7 +168,7 @@ export default function DetalleContrato() {
       const updated = await getContratoById(id);
       setContrato(updated);
     } catch (err) {
-      toast.error(err.message);
+      toast.error(parsearError(err));
     } finally {
       setTxLoading(false);
     }
@@ -187,7 +189,7 @@ export default function DetalleContrato() {
       await refresh();
       navigate("/dashboard");
     } catch (err) {
-      toast.error(err.message);
+      toast.error(parsearError(err));
     } finally {
       setTxLoading(false);
     }

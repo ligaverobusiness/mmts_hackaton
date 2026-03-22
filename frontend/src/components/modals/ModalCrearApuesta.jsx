@@ -5,6 +5,7 @@ import { useApp } from "../../context/AppContext";
 import { crearApuesta } from "../../services/apuestas";
 import CopyButton from "../ui/CopyButton";
 import styles from "./ModalCrearContrato.module.css";
+import { parsearError } from "../../utils/errores";
 
 const CATEGORIAS = [
   "Deportes",
@@ -113,7 +114,7 @@ export default function ModalCrearApuesta({ onClose }) {
         onClose();
       }
     } catch (err) {
-      toast.error(err.message || "Error al crear la apuesta");
+      toast.error(parsearError(err));
     } finally {
       setLoading(false);
     }

@@ -5,6 +5,7 @@ import { useApp } from "../../context/AppContext";
 import { crearContrato } from "../../services/contratos";
 import styles from "./ModalCrearContrato.module.css";
 import CopyButton from "../ui/CopyButton";
+import { parsearError } from "../../utils/errores";
 
 const CATEGORIAS = [
   "Diseño & Creatividad",
@@ -104,7 +105,7 @@ export default function ModalCrearContrato({ onClose }) {
         onClose();
       }
     } catch (err) {
-      toast.error(err.message || "Error al crear el contrato");
+      toast.error(parsearError(err));
     } finally {
       setLoading(false);
     }

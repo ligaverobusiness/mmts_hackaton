@@ -2,16 +2,14 @@ const { ethers } = require("hardhat");
 
 async function main() {
   const [deployer] = await ethers.getSigners();
-
-  const BET_FACTORY_ADDRESS = "0x461bD2Fa75Eb376cf39988e4bD79fB944D135Ef8";
-
+  const WORK_FACTORY_ADDRESS = "0xDB69d628eA3B1f15AaFa526Eae12EAB6Ef36679b";
   const factory = await ethers.getContractAt(
-    "BetFactoryCOFI",
-    BET_FACTORY_ADDRESS,
+    "WorkFactoryCOFI",
+    WORK_FACTORY_ADDRESS,
   );
   const tx = await factory.setBridgeReceiver(deployer.address);
   await tx.wait();
-  console.log("✅ BetFactory bridgeReceiver configurado:", deployer.address);
+  console.log("✅ WorkFactory bridgeReceiver configurado:", deployer.address);
 }
 
 main().catch((err) => {
