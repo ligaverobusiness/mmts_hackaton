@@ -58,3 +58,13 @@ VITE_USDC_ADDRESS=0x1c7D4B196Cb0C7B01d743Fbc6116a902379C7238
 VITE_GENLAYER_WORK_VALIDATOR=...
 VITE_GENLAYER_BET_ORACLE=...
 ```
+
+### Consideraciones para la Web (Prototipo)
+
+-Recomendamos que en los precios establecer una cantidad mínima como 0.01$
+-MetaMask tarda algunos segundos en completar los contratos, apuestas y cívicos; en esta web
+se piden dos confirmaciones así que no piensen que la página se quedó congelada por favor! ;D
+-La página solo funciona si MetaMask está conectado a una ETH de Sepolia
+-Sabemos que es un error de ciberseguridad grande, pero que los .env sean públicos está hecho
+a propósito para que la clonación del repositorio sea directa y sencilla (las direcciones, contratos
+y wallets son destinadas únicamente a este proyecto, no son personales)
