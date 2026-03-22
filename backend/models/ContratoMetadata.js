@@ -6,11 +6,12 @@ class ContratoMetadata {
     const now = Date.now();
     db.prepare(
       `
-      INSERT OR REPLACE INTO contratos_metadata
-        (contrato_address, categoria, descripcion_publica, condiciones_ia,
-         umbral_validadores, es_privado, link_token, executor_address, creado_en)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-    `,
+    INSERT OR REPLACE INTO contratos_metadata
+      (contrato_address, categoria, descripcion_publica, condiciones_ia,
+       umbral_validadores, es_privado, link_token, executor_address,
+       genlayer_address, creado_en)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+  `,
     ).run(
       data.address?.toLowerCase(),
       data.categoria || null,
@@ -20,6 +21,7 @@ class ContratoMetadata {
       data.es_privado ? 1 : 0,
       data.link_token || null,
       data.executor_address?.toLowerCase() || null,
+      data.genlayer_address || null,
       now,
     );
   }

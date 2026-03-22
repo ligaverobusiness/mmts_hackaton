@@ -1,4 +1,5 @@
-from genlayer import gl
+# { "Depends": "py-genlayer:test" }
+from genlayer import *
 import json
 
 
@@ -7,20 +8,18 @@ class WorkValidator(gl.Contract):
     work_address:       str
     title:              str
     conditions_ia:      str
-    required_approvals: int
+    required_approvals: u256
     delivery_url:       str
     status:             str
     is_approved:        bool
     summary:            str
-    votes_yes:          int
-    votes_no:           int
 
     def __init__(
         self,
         work_address:       str,
         title:              str,
         conditions_ia:      str,
-        required_approvals: int,
+        required_approvals: u256,
     ):
         self.work_address       = work_address
         self.title              = title
@@ -30,42 +29,28 @@ class WorkValidator(gl.Contract):
         self.status             = "pending"
         self.is_approved        = False
         self.summary            = ""
-        self.votes_yes          = 0
-        self.votes_no           = 0
-
-    def _leer_url(self, url: str) -> str:
-        """Intenta leer el contenido de una URL. Devuelve string con lo que encontró."""
-        url = url.strip()
-        if not url:
-            return ""
-        try:
-            content = gl.get_webpage(url)
-            return content[:4000] if len(content) > 4000 else content
-        except Exception:
-            return f"[No se pudo acceder a: {url}]"
-
-    def _extraer_urls(self, delivery_url: str) -> list:
-        """Extrae URLs individuales de un string que puede tener varias separadas por saltos de línea."""
-        urls = [u.strip() for u in delivery_url.split('\n') if u.strip()]
-        # Filtrar solo los que parecen URLs
-        return [u for u in urls if u.startswith('http') or u.startswith('ipfs')]
 
     @gl.public.write
-    def validate_delivery(self, delivery_url: str) -> dict:
+    def validate_delivery(self, delivery_url: str):
         assert self.status == "pending", "Ya fue validado"
-        assert len(delivery_url) > 0,    "URL de entrega vacía"
+        assert len(delivery_url) > 0, "URL de entrega vacía"
 
         self.delivery_url = delivery_url
-        urls = self._extraer_urls(delivery_url)
+        title         = self.title
+        conditions_ia = self.conditions_ia
 
-        @gl.nondet
         def evaluate() -> str:
-            # Leer contenido de todas las URLs entregadas
+            raw_urls = [u.strip() for u in delivery_url.split('\n') if u.strip()]
+            urls     = [u for u in raw_urls if u.startswith('http') or u.startswith('ipfs')]
+
             contenidos = []
-            for i, url in enumerate(urls[:5]):  # máximo 5 URLs
-                contenido = self._leer_url(url)
-                if contenido:
-                    contenidos.append(f"RECURSO {i+1} ({url}):\n{contenido}")
+            for i, url in enumerate(urls[:5]):
+                try:
+                    content = gl.get_webpage(url)
+                    preview = content[:4000] if len(content) > 4000 else content
+                    contenidos.append(f"RECURSO {i+1} ({url}):\n{preview}")
+                except Exception:
+                    contenidos.append(f"RECURSO {i+1} ({url}): [No accesible]")
 
             contenido_total = "\n\n".join(contenidos) if contenidos else \
                 f"No se pudieron acceder a las URLs: {delivery_url}"
@@ -74,10 +59,10 @@ class WorkValidator(gl.Contract):
 Eres un juez imparcial evaluando la entrega de un trabajo freelance.
 
 TÍTULO DEL CONTRATO:
-{self.title}
+{title}
 
 CONDICIONES ESPECÍFICAS QUE DEBE CUMPLIR LA ENTREGA:
-{self.conditions_ia}
+{conditions_ia}
 
 URLS/ARCHIVOS ENTREGADOS:
 {delivery_url}
@@ -97,7 +82,7 @@ INSTRUCCIONES DE EVALUACIÓN:
 RESPONDE ÚNICAMENTE con un JSON válido con este formato exacto:
 {{
   "decision": "si" o "no",
-  "summary": "Resumen en 2-3 oraciones de por qué aprueba o rechaza, mencionando qué recursos revisaste"
+  "summary": "Resumen en 2-3 oraciones de por qué aprueba o rechaza"
 }}
 
 No agregues texto antes ni después del JSON.
@@ -126,19 +111,13 @@ No agregues texto antes ni después del JSON.
         self.summary     = summary
         self.status      = "validated" if self.is_approved else "rejected"
 
-        return {
-            "approved":     self.is_approved,
-            "summary":      self.summary,
-            "work_address": self.work_address,
-        }
-
     @gl.public.view
-    def get_result(self) -> dict:
-        return {
+    def get_result(self) -> str:
+        return json.dumps({
             "work_address":       self.work_address,
             "status":             self.status,
             "is_approved":        self.is_approved,
             "summary":            self.summary,
-            "required_approvals": self.required_approvals,
+            "required_approvals": int(self.required_approvals),
             "delivery_url":       self.delivery_url,
-        }
+        })

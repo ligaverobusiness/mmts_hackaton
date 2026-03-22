@@ -8,9 +8,10 @@ let db;
 function getDb() {
   if (!db) {
     db = new Database(DB_PATH);
-    db.pragma("journal_mode = WAL"); // Mejor rendimiento
+    db.pragma("journal_mode = WAL");
     db.pragma("foreign_keys = ON");
     initTables();
+    runMigrations();
   }
   return db;
 }
@@ -31,25 +32,25 @@ function initTables() {
     );
 
     CREATE TABLE IF NOT EXISTS contratos_metadata (
-      contrato_address  TEXT PRIMARY KEY,
-      categoria         TEXT,
+      contrato_address    TEXT PRIMARY KEY,
+      categoria           TEXT,
       descripcion_publica TEXT,
-      condiciones_ia    TEXT,
-      umbral_validadores INTEGER DEFAULT 3,
-      es_privado        INTEGER DEFAULT 0,
-      link_token        TEXT UNIQUE,
-      executor_address  TEXT,
-      creado_en         INTEGER NOT NULL
+      condiciones_ia      TEXT,
+      umbral_validadores  INTEGER DEFAULT 3,
+      es_privado          INTEGER DEFAULT 0,
+      link_token          TEXT UNIQUE,
+      executor_address    TEXT,
+      creado_en           INTEGER NOT NULL
     );
 
     CREATE TABLE IF NOT EXISTS apuestas_metadata (
-      bet_address       TEXT PRIMARY KEY,
-      categoria         TEXT,
-      tipo_estructura   TEXT DEFAULT 'binary',
-      nombres_lados     TEXT,
-      es_privada        INTEGER DEFAULT 0,
-      link_token        TEXT UNIQUE,
-      creado_en         INTEGER NOT NULL
+      bet_address     TEXT PRIMARY KEY,
+      categoria       TEXT,
+      tipo_estructura TEXT DEFAULT 'binary',
+      nombres_lados   TEXT,
+      es_privada      INTEGER DEFAULT 0,
+      link_token      TEXT UNIQUE,
+      creado_en       INTEGER NOT NULL
     );
 
     CREATE TABLE IF NOT EXISTS civico_metadata (
@@ -63,6 +64,20 @@ function initTables() {
       creado_en         INTEGER NOT NULL
     );
   `);
+}
+
+function runMigrations() {
+  const migrations = [
+    `ALTER TABLE contratos_metadata ADD COLUMN genlayer_address TEXT`,
+  ];
+
+  for (const sql of migrations) {
+    try {
+      db.exec(sql);
+    } catch (_) {
+      // Columna ya existe — ignorar
+    }
+  }
 }
 
 module.exports = { getDb };

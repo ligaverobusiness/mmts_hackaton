@@ -2,7 +2,7 @@
   "_format": "hh-sol-cache-2",
   "files": {
     "C:\\Users\\Usuario\\Desktop\\proyecto_hackaton\\contracts\\contracts\\BetCOFI.sol": {
-      "lastModificationDate": 1774063119116,
+      "lastModificationDate": 1774121599631,
       "contentHash": "12d33c93f8e51cd8336b098e57e66c60",
       "sourceName": "contracts/BetCOFI.sol",
       "solcConfig": {
@@ -81,8 +81,8 @@
       ]
     },
     "C:\\Users\\Usuario\\Desktop\\proyecto_hackaton\\contracts\\node_modules\\@openzeppelin\\contracts\\utils\\ReentrancyGuard.sol": {
-      "lastModificationDate": 1774058299085,
-      "contentHash": "6e5efb502dd6652d12ad15eea2c5bdf4",
+      "lastModificationDate": 1774121624386,
+      "contentHash": "9a5b0ade82ac3501355a963afda1b081",
       "sourceName": "@openzeppelin/contracts/utils/ReentrancyGuard.sol",
       "solcConfig": {
         "version": "0.8.22",
@@ -120,8 +120,8 @@
       ]
     },
     "C:\\Users\\Usuario\\Desktop\\proyecto_hackaton\\contracts\\node_modules\\@openzeppelin\\contracts\\access\\Ownable.sol": {
-      "lastModificationDate": 1774058299041,
-      "contentHash": "d3c790edc9ccf808a17c5a6cd13614fd",
+      "lastModificationDate": 1774121623690,
+      "contentHash": "f665fc4a91af3170f86727fc49cc091f",
       "sourceName": "@openzeppelin/contracts/access/Ownable.sol",
       "solcConfig": {
         "version": "0.8.22",
@@ -159,8 +159,8 @@
       ]
     },
     "C:\\Users\\Usuario\\Desktop\\proyecto_hackaton\\contracts\\node_modules\\@openzeppelin\\contracts\\token\\ERC20\\IERC20.sol": {
-      "lastModificationDate": 1774058298848,
-      "contentHash": "9261adf6457863de3e9892f51317ec89",
+      "lastModificationDate": 1774121624281,
+      "contentHash": "a00cf658e29421979ba74ec1db151c1a",
       "sourceName": "@openzeppelin/contracts/token/ERC20/IERC20.sol",
       "solcConfig": {
         "version": "0.8.22",
@@ -196,8 +196,8 @@
       ]
     },
     "C:\\Users\\Usuario\\Desktop\\proyecto_hackaton\\contracts\\node_modules\\@openzeppelin\\contracts\\utils\\StorageSlot.sol": {
-      "lastModificationDate": 1774058299162,
-      "contentHash": "e656d64c4ce918f3d13030b91c935134",
+      "lastModificationDate": 1774121624395,
+      "contentHash": "c6edb541dfe1cc6e1604dae14d0c57aa",
       "sourceName": "@openzeppelin/contracts/utils/StorageSlot.sol",
       "solcConfig": {
         "version": "0.8.22",
@@ -233,8 +233,8 @@
       ]
     },
     "C:\\Users\\Usuario\\Desktop\\proyecto_hackaton\\contracts\\node_modules\\@openzeppelin\\contracts\\utils\\Context.sol": {
-      "lastModificationDate": 1774058298252,
-      "contentHash": "67bfbc07588eb8683b3fd8f6f909563e",
+      "lastModificationDate": 1774121624366,
+      "contentHash": "2783b901218e982baedae531a748ed8d",
       "sourceName": "@openzeppelin/contracts/utils/Context.sol",
       "solcConfig": {
         "version": "0.8.22",
@@ -270,7 +270,7 @@
       ]
     },
     "C:\\Users\\Usuario\\Desktop\\proyecto_hackaton\\contracts\\contracts\\BetFactoryCOFI.sol": {
-      "lastModificationDate": 1774063142686,
+      "lastModificationDate": 1774121599633,
       "contentHash": "106580c62a3eb33365056095fecec3eb",
       "sourceName": "contracts/BetFactoryCOFI.sol",
       "solcConfig": {
@@ -311,7 +311,7 @@
       ]
     },
     "C:\\Users\\Usuario\\Desktop\\proyecto_hackaton\\contracts\\contracts\\WorkFactoryCOFI.sol": {
-      "lastModificationDate": 1774062309157,
+      "lastModificationDate": 1774121599637,
       "contentHash": "2eb2fea6b2b3f3aca58cc27f6295f0c2",
       "sourceName": "contracts/WorkFactoryCOFI.sol",
       "solcConfig": {
@@ -352,7 +352,7 @@
       ]
     },
     "C:\\Users\\Usuario\\Desktop\\proyecto_hackaton\\contracts\\contracts\\WorkCOFI.sol": {
-      "lastModificationDate": 1774059021152,
+      "lastModificationDate": 1774121599634,
       "contentHash": "01fdfac118447a9d3461f6187b2fab9f",
       "sourceName": "contracts/WorkCOFI.sol",
       "solcConfig": {
@@ -431,7 +431,7 @@
       ]
     },
     "C:\\Users\\Usuario\\Desktop\\proyecto_hackaton\\contracts\\contracts\\CivicoCOFI.sol": {
-      "lastModificationDate": 1774065764609,
+      "lastModificationDate": 1774121674629,
       "contentHash": "c39dbe7e3f9ee99fbb1d276652de9311",
       "sourceName": "contracts/CivicoCOFI.sol",
       "solcConfig": {
@@ -472,7 +472,7 @@
       ]
     },
     "C:\\Users\\Usuario\\Desktop\\proyecto_hackaton\\contracts\\contracts\\CivicoFactoryCOFI.sol": {
-      "lastModificationDate": 1774065782228,
+      "lastModificationDate": 1774121674630,
       "contentHash": "3b8e0e359e3035243f9d037521d6c942",
       "sourceName": "contracts/CivicoFactoryCOFI.sol",
       "solcConfig": {

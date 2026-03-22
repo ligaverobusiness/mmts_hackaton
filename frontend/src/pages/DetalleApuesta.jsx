@@ -18,6 +18,7 @@ import {
 import Badge from "../components/ui/Badge";
 import Countdown from "../components/ui/Countdown";
 import styles from "./DetalleApuesta.module.css";
+import { resolveBetOracle, pollBetOracle } from "../services/genlayer";
 
 function fmt(n) {
   if (n >= 1e6) return `$${(n / 1e6).toFixed(1)}M`;
@@ -50,6 +51,9 @@ export default function DetalleApuesta() {
   const [stakeAmount, setStakeAmount] = useState("");
   const [misApuestas, setMisApuestas] = useState(null);
   const [ganancia, setGanancia] = useState(null);
+  const [isResolving, setIsResolving] = useState(false);
+  const [oracleResult, setOracleResult] = useState(null);
+  const ORACLE_ADDRESS = import.meta.env.VITE_GENLAYER_BET_ORACLE || null;
 
   useEffect(() => {
     const load = async () => {
@@ -123,10 +127,36 @@ export default function DetalleApuesta() {
   const handleResolver = async () => {
     setTxLoading(true);
     try {
+      // 1. Llamar resolve() en BetCOFI on-chain
       await resolverApuesta(id);
       toast.info("Resolución solicitada — GenLayer está evaluando…");
+
       const updated = await getApuestaById(id);
       setApuesta(updated);
+
+      // 2. Llamar resolve() en el oracle de GenLayer
+      const oracleAddr = updated.oracle_address || ORACLE_ADDRESS;
+      if (oracleAddr) {
+        setIsResolving(true);
+        try {
+          await resolveBetOracle(oracleAddr);
+        } catch (err) {
+          console.warn("Oracle GenLayer:", err.message);
+        }
+
+        // 3. Polling hasta que el oracle responda
+        const stopPoll = pollBetOracle(oracleAddr, id, (result) => {
+          setOracleResult(result);
+          if (result?.status !== "pending") {
+            setIsResolving(false);
+            stopPoll();
+            setTimeout(async () => {
+              const final = await getApuestaById(id);
+              setApuesta(final);
+            }, 5000);
+          }
+        });
+      }
     } catch (err) {
       toast.error(err.message);
     } finally {
@@ -523,17 +553,45 @@ export default function DetalleApuesta() {
               <div className={styles.sideCard}>
                 <div className={styles.sideCardTitle}>Resolver Mercado</div>
                 <p className={styles.sideCardDesc}>
-                  El plazo venció. GenLayer evaluará el criterio y determinará
-                  el ganador.
+                  {isResolving
+                    ? "GenLayer está evaluando el resultado…"
+                    : "El plazo venció. GenLayer buscará el resultado en internet."}
                 </p>
+                {oracleResult && oracleResult.status !== "pending" && (
+                  <div
+                    style={{
+                      padding: "8px 12px",
+                      marginBottom: 10,
+                      background:
+                        oracleResult.status === "resolved"
+                          ? "var(--green-l)"
+                          : "var(--amber-l)",
+                      border: "1px solid",
+                      borderColor:
+                        oracleResult.status === "resolved"
+                          ? "rgba(26,92,52,0.3)"
+                          : "rgba(146,82,10,0.3)",
+                      fontSize: 11,
+                      color: "var(--ink2)",
+                      fontStyle: "italic",
+                    }}
+                  >
+                    {oracleResult.summary}
+                  </div>
+                )}
                 <button
                   className={styles.btnResolver}
                   onClick={handleResolver}
-                  disabled={txLoading}
+                  disabled={txLoading || isResolving}
                 >
-                  {txLoading ? (
+                  {isResolving ? (
                     <>
-                      <span className={styles.spinner} /> Resolviendo…
+                      <span className={styles.spinner} /> Evaluando con
+                      GenLayer…
+                    </>
+                  ) : txLoading ? (
+                    <>
+                      <span className={styles.spinner} /> Procesando…
                     </>
                   ) : (
                     "Activar Resolución IA →"
@@ -541,6 +599,7 @@ export default function DetalleApuesta() {
                 </button>
               </div>
             )}
+
             {/* Cancelar */}
             {isCreator && apuesta?.status === "resolving" && (
               <div className={styles.sideCard}>

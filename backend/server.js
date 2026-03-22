@@ -24,3 +24,5 @@ app.use(errorHandler);
 app.listen(PORT, () => {
   console.log(`Servidor corriendo en http://localhost:${PORT}`);
 });
+
+app.use("/api/genlayer", require("./routes/genlayer"));

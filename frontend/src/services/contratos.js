@@ -48,28 +48,24 @@ export async function crearContrato({
   title,
   descriptionPublic,
   bounty,
-  endDate, // timestamp en ms
+  endDate,
   requiredApprovals,
   isPrivate,
-  // Datos solo para el backend:
   categoria,
   condicionesIA,
   linkToken,
   executorAddress,
 }) {
   if (!WORK_FACTORY_ADDRESS) {
-    throw new Error(
-      "WorkFactory no deployada aún — configura VITE_WORK_FACTORY_ADDRESS",
-    );
+    throw new Error("WorkFactory no deployada");
   }
 
   const signer = await getSigner();
   const address = await signer.getAddress();
+  const amountBn = parseUsdc(bounty);
 
   // 1. Aprobar USDC
   const usdc = new ethers.Contract(USDC_ADDRESS, ERC20_ABI, signer);
-  const amountBn = parseUsdc(bounty);
-
   const allowance = await usdc.allowance(address, WORK_FACTORY_ADDRESS);
   if (allowance < amountBn) {
     const approveTx = await usdc.approve(WORK_FACTORY_ADDRESS, amountBn);
@@ -93,7 +89,6 @@ export async function crearContrato({
   );
   const receipt = await tx.wait();
 
-  // 3. Obtener address del contrato creado del evento
   const event = receipt.logs
     .map((log) => {
       try {
@@ -104,11 +99,26 @@ export async function crearContrato({
     })
     .find((e) => e?.name === "WorkCreated");
   const workAddress = event?.args?.workAddress;
+  if (!workAddress) throw new Error("No se encontró la address del contrato");
 
-  if (!workAddress)
-    throw new Error("No se encontró la address del contrato creado");
+  // 3. Desplegar validador en GenLayer
+  let genlayerAddress = null;
+  try {
+    const { deployWorkValidator } = await import("./genlayer");
+    genlayerAddress = await deployWorkValidator({
+      workAddress,
+      title,
+      conditionsIa: condicionesIA,
+      requiredApprovals,
+    });
+  } catch (err) {
+    console.warn(
+      "GenLayer deploy falló — el contrato existe on-chain pero sin validador IA:",
+      err.message,
+    );
+  }
 
-  // 4. Guardar metadata en backend (condiciones IA, categoría, etc.)
+  // 4. Guardar metadata en backend
   await api.post("/api/contratos", {
     address: workAddress,
     categoria,
@@ -118,9 +128,10 @@ export async function crearContrato({
     es_privado: isPrivate,
     link_token: linkToken || null,
     executor_address: executorAddress || null,
+    genlayer_address: genlayerAddress,
   });
 
-  return { workAddress, txHash: tx.hash };
+  return { workAddress, txHash: tx.hash, genlayerAddress };
 }
 
 export async function entregarTrabajo(workAddress, deliveryUrl) {

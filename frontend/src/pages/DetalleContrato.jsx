@@ -37,6 +37,8 @@ export default function DetalleContrato() {
   const [loading, setLoading] = useState(true);
   const [txLoading, setTxLoading] = useState(false);
   const [archivosSubidos, setArchivosSubidos] = useState([]);
+  const VALIDATOR_ADDRESS =
+    import.meta.env.VITE_GENLAYER_WORK_VALIDATOR || null;
 
   // Entrega
   const [deliveryUrl, setDeliveryUrl] = useState("");
@@ -68,13 +70,17 @@ export default function DetalleContrato() {
         // Si está validando, iniciar polling
         if (data.status === "resolving" && data.genlayerAddress) {
           setIsValidating(true);
-          const stopPoll = pollValidation(data.genlayerAddress, (result) => {
-            if (result.status !== "pending") {
-              setIsValidating(false);
-              setValidResult(result);
-              stopPoll();
-            }
-          });
+          const stopPoll = pollValidation(
+            data.genlayerAddress,
+            id,
+            (result) => {
+              if (result.status !== "pending") {
+                setIsValidating(false);
+                setValidResult(result);
+                stopPoll();
+              }
+            },
+          );
         }
       } catch (err) {
         toast.error(err.message);
@@ -118,8 +124,26 @@ export default function DetalleContrato() {
       await solicitarValidacion(id);
       setIsValidating(true);
       toast.info("Validación iniciada — Los jueces IA están evaluando…");
+
       const updated = await getContratoById(id);
       setContrato(updated);
+
+      // Iniciar polling con relay automático
+      const genlayerAddr = updated.genlayer_address || VALIDATOR_ADDRESS;
+      if (genlayerAddr) {
+        const stopPoll = pollValidation(genlayerAddr, id, (result) => {
+          if (result?.status !== "pending") {
+            setIsValidating(false);
+            setValidResult(result);
+            stopPoll();
+            // Recargar contrato para ver el nuevo status on-chain
+            setTimeout(async () => {
+              const final = await getContratoById(id);
+              setContrato(final);
+            }, 5000);
+          }
+        });
+      }
     } catch (err) {
       toast.error(err.message);
     } finally {
@@ -333,7 +357,7 @@ export default function DetalleContrato() {
             </section>
 
             {/* ── Entrega — para el freelancer ── */}
-            {isActive && !isCreator && (
+            {contrato?.status === "open" && !isCreator && (
               <section className={styles.section}>
                 <div className={styles.sectionTitle}>Entregar Trabajo</div>
                 <div className={styles.deliveryBox}>
