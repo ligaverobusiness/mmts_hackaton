@@ -131,11 +131,11 @@ export default function DetalleContrato() {
 
       const genlayerAddr = updated.genlayer_address || VALIDATOR_ADDRESS;
       const urlEntrega = updated.deliveryUrl || contrato.deliveryUrl;
-
+      console.log("genlayerAddr:", genlayerAddr);
+      console.log("VALIDATOR_ADDRESS:", VALIDATOR_ADDRESS);
+      console.log("updated keys:", Object.keys(updated));
       if (genlayerAddr && urlEntrega) {
-        // ✅ Paso que faltaba: escribir en el contrato GenLayer
-        await validateDelivery(genlayerAddr, urlEntrega, address); // ✅ address del useWallet()
-
+        await validateDelivery(genlayerAddr, urlEntrega); // ✅ esta línea faltaba
         setIsValidating(true);
 
         const stopPoll = pollValidation(genlayerAddr, id, (result) => {
